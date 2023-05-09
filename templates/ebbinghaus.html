@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ today|date:"Y-m-d" }}</title>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/c/font_4056627_pguw2l3vp0b.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/word_table.css' %}">
+</head>
+<body>
+    <div class="container main">
+        <div class="header">
+            <h1 class="text-center">单词列表 - <span>艾宾浩斯抗遗忘</span></h1>
+            <div class="float-end today">
+                <span class="fst-italic">Date:</span>
+                {{ today|date:"Y-m-d" }}
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row table-header">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-1 fst-italic">No.</div>
+                    <div class="col-4 fst-italic">Word</div>
+                    <div class="col-7 fst-italic">Meaning</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12 text-center">Review</div>
+                    <div class="col">D1</div>
+                    <div class="col">D2</div>
+                    <div class="col">D4</div>
+                    <div class="col">D7</div>
+                    <div class="col">D15</div>
+                    <div class="col">D30</div>
+                    <div class="col">D60</div>
+                    <div class="col">D90</div>
+                    <div class="col">180</div>
+                    <div class="col">忘记</div>
+                    <div class="col">美音</div>
+                    <div class="col">英音</div>
+                </div>
+            </div>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="table-body">
+                {% for word in words %}
+                    <div class="row h-100">
+                        <div class="col-6">
+                            <div class="row h-100">
+                                <div class="col-1 num">{{ forloop.counter }}</div>
+                                <div class="col-4 word">{{ word.word }}</div>
+                                <div class="col-7 meaning">{{ word.meaning|safe }}</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row h-100">
+                                {% for review_time in word.get_review_times %}
+                                    <div class="col h-100">
+                                        <div class="check-learn h-100">
+                                            {% if review_time %}
+                                                <input type="checkbox" {% if review_time %}checked{% endif %} disabled class="form-check-input">
+                                            {% else %}
+                                                <input type="checkbox" name="{{ word.word }}" value="{{ forloop.counter }}" class="form-check-input">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                <div class="col h-100">
+                                    <div class="check-learn">
+                                        <input type="checkbox" name="{{ word.word }}" value="forget" class="form-check-input">
+                                    </div>
+                                </div>
+                                <div class="col h-100">
+                                    <div class="check-learn">
+                                        <i class="iconfont icon-fayin"></i>
+                                    </div>
+                                </div>
+                                <div class="col h-100">
+                                    <div class="check-learn">
+                                        <i class="iconfont icon-fayin"></i>
+                                        <audio src="http://dict.youdao.com/dictvoice?type=0&audio=king"></audio>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        <div class="submit position-relative">
+            <input type="submit" class="btn btn-info position-absolute">
+        </div>
+        </form>
+    </div>
+</body>
+</html>

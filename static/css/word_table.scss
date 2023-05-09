@@ -1,0 +1,139 @@
+.main {
+  margin: 50px auto;
+  border: #77bbaf solid 3px;
+
+  .header {
+    margin: 30px auto;
+
+    h1 {
+      font-weight: bold;
+
+      span {
+        color: #2eb89c;
+      }
+    }
+
+    .today {
+      margin: 10px auto;
+      font-size: 18px;
+
+      span {
+        font-size: 23px;
+        color: #77bbaf;
+      }
+    }
+  }
+
+  .table-header {
+    background-color: #d3f2ec;
+    font-weight: bold;
+    height: 80px;
+    align-items: center;
+    border-top: #77bbaf solid 2px;
+    border-bottom: #77bbaf solid 2px;
+    font-style: italic;
+
+    > div:first-child {
+      height: 100%;
+      line-height: 74px;
+      border-right: #77bbaf solid 2px;
+      font-size: 22px;
+
+      div:not(:last-child) {
+        border-right: #77bbaf dotted 2px;
+      }
+    }
+
+    > div:last-child {
+      height: 100%;
+      color: #62cebb;
+
+      .row {
+        height: 100%;
+
+        div {
+          height: 50%;
+          line-height: 36px;
+        }
+      }
+
+      .col-12 {
+        border-bottom: #77bbaf solid 2px;
+      }
+
+      .col {
+        overflow: hidden;
+      }
+
+      .col:not(:last-child) {
+        border-right: #77bbaf solid 2px;
+      }
+    }
+  }
+
+  .table-body {
+    > .row {
+      border-bottom: #77bbaf dotted 2px;
+
+      > div:first-child {
+        height: 100%;
+        border-right: #77bbaf solid 2px;
+      }
+
+      .row {
+        height: 100%;
+
+        > div:not(:last-child) {
+          border-right: #77bbaf dotted 2px;
+        }
+      }
+
+      .check-learn {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        input {
+          width: 30px;
+          height: 30px;
+        }
+        .icon-fayin{
+          font-size: 25px;
+          font-weight: bold;
+          color: #77bbaf;
+          cursor: pointer;
+        }
+      }
+
+      > div > div {
+        min-height: 50px;
+      }
+    }
+
+    > .row:last-child {
+      border-bottom: none;
+    }
+
+    .even {
+      background-color: #e9f8f5;
+    }
+
+    .num, .word {
+      color: #77bbaf;
+      line-height: 50px;
+      font-size: 22px;
+    }
+
+    .meaning {
+      font-size: 16px;
+    }
+  }
+  .submit{
+    input{
+      top: 30px;
+      right: 0;
+    }
+  }
+}
