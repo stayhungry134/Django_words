@@ -15,7 +15,6 @@ def index(request):
                 review_list[review_index-1] = True
                 # print(review_list)
                 word.review_times = review_list
-                print(word.review_times)
                 word.save()
     today = datetime.date.today()
     words = LearnWords.objects.filter(next_date__lte=today)[:30]

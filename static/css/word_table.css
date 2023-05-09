@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .main {
   margin: 50px auto;
   border: #77bbaf solid 3px;
@@ -69,6 +73,9 @@
 }
 .main .table-body > .row .row > div:not(:last-child) {
   border-right: #77bbaf dotted 2px;
+}
+.main .table-body > .row .col {
+  overflow: hidden;
 }
 .main .table-body > .row .check-learn {
   width: 100%;

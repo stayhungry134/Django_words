@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://at.alicdn.com/t/c/font_4056627_pguw2l3vp0b.css">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/word_table.css' %}">
+    <script src="{% static 'js/ebbinghaus.js' %}" defer></script>
 </head>
 <body>
     <div class="container main">
@@ -78,12 +79,13 @@
                                 <div class="col h-100">
                                     <div class="check-learn">
                                         <i class="iconfont icon-fayin"></i>
+                                        <audio class="hidden" src="http://dict.youdao.com/dictvoice?type=0&audio={{ word.word }}"></audio>
                                     </div>
                                 </div>
                                 <div class="col h-100">
                                     <div class="check-learn">
                                         <i class="iconfont icon-fayin"></i>
-                                        <audio src="http://dict.youdao.com/dictvoice?type=0&audio=king"></audio>
+                                        <audio class="hidden" src="http://dict.youdao.com/dictvoice?type=1&audio={{ word.word }}"></audio>
                                     </div>
                                 </div>
                             </div>
