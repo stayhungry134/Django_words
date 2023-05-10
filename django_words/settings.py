@@ -76,8 +76,14 @@ WSGI_APPLICATION = 'django_words.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+        'NAME': 'django_words',   # 表名
+        'HOST': 'stayhungry134.com',    # 服务器地址
+        'USER': 'root',  # 用户名
+        'PASSWORD': '(Ethan/997813581....',   # 密码
+        'PORT': '3306',     # 端口号
     }
 }
 
@@ -112,13 +118,13 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False  # 关闭时区
+USE_TZ = False
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-# 静态文件配置
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = ['static']
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
