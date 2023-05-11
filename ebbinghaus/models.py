@@ -76,7 +76,7 @@ class TodayArticle(models.Model):
     last_review = models.DateField(verbose_name='上次复习日期')
 
     def __str__(self):
-        return self.title
+        return f"{self.title}---{self.init_date.isoformat()}"
 
     class Meta:
         verbose_name = 'today_article'

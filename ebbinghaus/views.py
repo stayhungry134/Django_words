@@ -15,6 +15,7 @@ def index(request):
 
 def get_words(request):
     """获取今日单词"""
+    today = datetime.date.today()
     if request.method == 'POST':
         for word_form in request.POST:
             word = LearnWords.objects.filter(word=word_form).first()
@@ -25,8 +26,8 @@ def get_words(request):
                 review_list[review_index-1] = True
                 # print(review_list)
                 word.review_times = review_list
+                word.last_review = today
                 word.save()
-    today = datetime.date.today()
     words = LearnWords.objects.filter(next_date__lte=today)[:30]
     return render(request, 'ebbinghaus/ebbinghaus.html', locals())
 
@@ -47,7 +48,7 @@ def get_article(request, article_id):
     article.content = article.content.replace('<p>', '<p class="my-3"><span class="word">')
     article.content = article.content.replace('</p>', '</span></p>')
     # 查询date的单词
-    words = LearnWords.objects.filter(last_review=date)
+    words = LearnWords.objects.filter(init_date=date)
     # 将文章中的今日单词标记出来
     for word in words:
         article.content = article.content.replace(f'<span class="word">{word.word}', f'<span class="word today-word">{word.word}')
