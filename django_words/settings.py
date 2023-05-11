@@ -79,12 +79,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        # 'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-        # 'NAME': 'django_words',   # 表名
-        # 'HOST': 'stayhungry134.com',    # 服务器地址
-        # 'USER': 'root',  # 用户名
-        # 'PASSWORD': '(Ethan/997813581....',   # 密码
-        # 'PORT': '3306',     # 端口号
     }
 }
 
