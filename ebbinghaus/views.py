@@ -43,6 +43,7 @@ def get_article(request, article_id):
     # 使用 span 标签包裹单词
     article.content = article.content.replace(' ', '</span> <span class="word">')
     article.content = article.content.replace(',</span>', '</span>, ')
+    article.content = article.content.replace('.</span>', '</span>. ')
     article.content = article.content.replace('<p>', '<p class="my-3"><span class="word">')
     article.content = article.content.replace('</p>', '</span></p>')
     # 查询date的单词

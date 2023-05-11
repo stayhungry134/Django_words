@@ -37,7 +37,9 @@ class LearnWords(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         import datetime
         today = datetime.date.today()
-        reviews = eval(self.review_times)
+        reviews = self.review_times
+        if isinstance(self.review_times, str):
+            reviews = eval(reviews)
 
         # 保证前面的天数复习完，才能出现后面的天数
         for i, date in enumerate(reviews):

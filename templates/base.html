@@ -14,8 +14,8 @@
     <div class="header container-fluid">
         <div class="container h-100">
             <ul class="row nav nav-pills w-100">
-                <li class="col-1 nav-item h-100 p-0"><a href="" class="nav-link w-100 h-100 d-block">Word</a></li>
-                <li class="col-1 nav-item h-100 p-0"><a href="" class="nav-link w-100 h-100 d-block">Essay</a></li>
+                <li class="col-1 nav-item h-100 p-0"><a href="{% url 'ebbinghaus:words' %}" class="nav-link w-100 h-100 d-block">Word</a></li>
+                <li class="col-1 nav-item h-100 p-0"><a href="{% url 'ebbinghaus:article' 1 %}" class="nav-link w-100 h-100 d-block">Article</a></li>
                 <li class="col-1 nav-item h-100 p-0"><a href="" class="nav-link w-100 h-100 d-block">About</a></li>
             </ul>
         </div>

@@ -1,3 +1,6 @@
+.article {
+  position: relative;
+}
 .article .content {
   font-size: 20px;
 }
@@ -22,6 +25,7 @@
 }
 .word-card .card-header {
   font-size: 1.5em;
+  background-color: #ddd;
 }
 .word-card .card-header .pronunciation span {
   border-radius: 15px;

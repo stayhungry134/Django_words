@@ -99,4 +99,17 @@
         </div>
         </form>
     </div>
+    <script>
+    // 点击提交按钮时，复制所有单词到剪贴板
+    let sumit_button = document.querySelector('.submit input');
+    sumit_button.addEventListener('click', function () {
+        let words = document.querySelectorAll('.word');
+        let words_str = '';
+        for (let i = 0; i < words.length; i++) {
+            words_str += words[i].innerText + ', ';
+        }
+        navigator.clipboard.writeText(words_str);
+        window.open('https://chat.openai.com/')
+    });
+    </script>
 {% endblock %}

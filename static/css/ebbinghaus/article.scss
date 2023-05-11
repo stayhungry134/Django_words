@@ -1,4 +1,5 @@
 .article {
+  position: relative;
   .date{}
   .content{
     font-size: 20px;
@@ -24,6 +25,7 @@
 
   .card-header{
     font-size: 1.5em;
+    background-color: #ddd;
     .pronunciation{
       span{
         border-radius: 15px;
@@ -42,7 +44,6 @@
         background: #28bea0;
         color: #fff;
       }
-      i{}
     }
   }
   .web-word{

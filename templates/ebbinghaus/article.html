@@ -60,21 +60,37 @@
     <script>
         // 点击单词，显示单词的意思
         let words = document.querySelectorAll('.word');
+        let article = document.querySelector('.article');
+        let word_card = document.querySelector('.word-card');
+
+        let article_position = article.getBoundingClientRect();
         words.forEach(function (word) {
+            // 设置单词卡片的位置
+            let word_position = word.getBoundingClientRect();
+
             word.addEventListener('click', function () {
+                // 获取单词的长和宽
+                let word_width = word_position.width;
+                let word_height = word_position.height;
+                let card_left = word_position.left - article_position.left + word_width / 2 - 225 + 'px';
+                let card_top = word_position.top - article_position.top + word_height + 10 + 'px';
+                word_card.style.left = card_left;
+                word_card.style.top = card_top;
                 // ajax 请求单词的意思
                 let word = this.innerText;
                 fetch(`/translate/${word}/`).then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                    let word_card = document.querySelector('.word-card');
+                    word_card.style.display = 'block';
                     word_card.querySelector('.card-header').innerHTML = `
-                        <div class="card-header d-flex justify-content-between">
-                            <div class="pronunciation d-flex">${word}</div>
-                            <div>
-                                <span>美<i>1</i></span>
-                                <span>英<i>2</i></span>
-                            </div>
+                        <div>${word}</div>
+                        <div class="pronunciation d-flex">
+                            <span class="fayin">美 <i class="iconfont icon-fayin"></i>
+                                <audio class="hidden" src="http://dict.youdao.com/dictvoice?type=0&audio=${word}"></audio>
+                            </span>
+                            <span class="fayin">英 <i class="iconfont icon-fayin"></i>
+                                <audio class="hidden" src="http://dict.youdao.com/dictvoice?type=1&audio=${word}"></audio>
+                            </span>
                         </div>`;
                     let list_group = word_card.querySelector('.list-group');
                     list_group.innerHTML = '';
@@ -86,9 +102,22 @@
                                         <div>${element['explain']}</div>`;
                         list_group.appendChild(li);
                     })
-
+                }).then(() => {
+                    // 点击按钮发音
+                    let fayin_buttons = document.querySelectorAll('.fayin');
+                    fayin_buttons.forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            let audio = this.querySelector('audio');
+                            audio.play();
+                        })
+                    })
                 })
             })
+        })
+
+        // 鼠标移除单词卡片，隐藏单词卡片
+        word_card.addEventListener('mouseleave', function () {
+            word_card.style.display = 'none';
         })
     </script>
 {% endblock %}
