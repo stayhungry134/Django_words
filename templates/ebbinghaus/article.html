@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>{{ article.title }}</title>
+{% endblock %}
+{% block css_file %}
+    <link rel="stylesheet" href="https://at.alicdn.com/t/c/font_4056627_pguw2l3vp0b.css">
+    <link rel="stylesheet" href="{% static 'css/ebbinghaus/article.css' %}">
+{% endblock %}
+
+{% block main %}
+    <div class="article container row mt-5 mx-auto">
+        <div class="col-8">
+            <div class="title">
+                <h2 class="h2">{{ article.title }}</h2>
+            </div>
+            <div class="date d-flex">
+                <div class="col-4">
+                    创建日期：<span class="text-info">{{ date }}</span>
+                </div>
+                <div class="col-4">
+                    上次阅读日期：<span class="text-info">{{ article.last_review }}</span>
+                </div>
+            </div>
+            <div class="content">
+                {{ article.content|safe }}
+            </div>
+
+            <div class="card word-card">
+                <div class="card-header d-flex justify-content-between">
+                    <div>bloc</div>
+                    <div class="pronunciation d-flex">
+                        <span>美 <i class="iconfont icon-fayin"></i></span>
+                        <span>英 <i class="iconfont icon-fayin"></i></span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="web-word">Vision</div>
+                            <div>视觉,愿景,视力</div>
+                        </li>
+                        <li class="list-group-item ">
+                            <div class="web-word">Dolby Vision</div>
+                            <div>杜比视界,杜比视觉,杜比视频高动态技术,杜比影像</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="web-word">Peripheral vision</div>
+                            <div>外围视觉,周边视觉,周围视觉,边缘视觉</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 ps-4">
+            其他文章
+        </div>
+    </div>
+
+    <script>
+        // 点击单词，显示单词的意思
+        let words = document.querySelectorAll('.word');
+        words.forEach(function (word) {
+            word.addEventListener('click', function () {
+                // ajax 请求单词的意思
+                let word = this.innerText;
+                fetch(`/translate/${word}/`).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    let word_card = document.querySelector('.word-card');
+                    word_card.querySelector('.card-header').innerHTML = `
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="pronunciation d-flex">${word}</div>
+                            <div>
+                                <span>美<i>1</i></span>
+                                <span>英<i>2</i></span>
+                            </div>
+                        </div>`;
+                    let list_group = word_card.querySelector('.list-group');
+                    list_group.innerHTML = '';
+                    // 对data进行循环
+                    data['entries'].forEach((element) => {
+                        let li = document.createElement('li');
+                        li.className = 'list-group-item';
+                        li.innerHTML = `<div class="web-word">${element['entry']}</div>
+                                        <div>${element['explain']}</div>`;
+                        list_group.appendChild(li);
+                    })
+
+                })
+            })
+        })
+    </script>
+{% endblock %}

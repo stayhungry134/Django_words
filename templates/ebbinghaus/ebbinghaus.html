@@ -1,17 +1,18 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% block title %}
     <title>{{ today|date:"Y-m-d" }}</title>
+{% endblock %}
+{% block css_file %}
     <link rel="stylesheet" href="https://at.alicdn.com/t/c/font_4056627_pguw2l3vp0b.css">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/word_table.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ebbinghaus/word_table.css' %}">
+{% endblock %}
+{% block js_file %}
     <script src="{% static 'js/ebbinghaus.js' %}" defer></script>
-</head>
-<body>
+{% endblock %}
+{% block main %}
     <div class="container main">
-        <div class="header">
+        <div class="header-title">
             <h1 class="text-center">单词列表 - <span>艾宾浩斯抗遗忘</span></h1>
             <div class="float-end today">
                 <span class="fst-italic">Date:</span>
@@ -98,5 +99,4 @@
         </div>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}

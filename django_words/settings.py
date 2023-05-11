@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mdeditor',
     'ebbinghaus',
 ]
 
@@ -76,14 +77,14 @@ WSGI_APPLICATION = 'django_words.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-        'NAME': 'django_words',   # 表名
-        'HOST': 'stayhungry134.com',    # 服务器地址
-        'USER': 'root',  # 用户名
-        'PASSWORD': '(Ethan/997813581....',   # 密码
-        'PORT': '3306',     # 端口号
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+        # 'NAME': 'django_words',   # 表名
+        # 'HOST': 'stayhungry134.com',    # 服务器地址
+        # 'USER': 'root',  # 用户名
+        # 'PASSWORD': '(Ethan/997813581....',   # 密码
+        # 'PORT': '3306',     # 端口号
     }
 }
 
@@ -128,7 +129,14 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = ['static']
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# Media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# MDeditor
+X_FRAME_OPTIONS = 'SAMEORIGIN'

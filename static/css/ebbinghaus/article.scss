@@ -1,0 +1,52 @@
+.article {
+  .date{}
+  .content{
+    font-size: 20px;
+    .word{
+      cursor: pointer;
+    }
+    .word:hover{
+      background: #26b598;
+      color: #fff;
+      border-radius: 4px;
+    }
+    .today-word{
+      color: #ea7a6d;
+    }
+  }
+}
+.word-card {
+  position: absolute;
+  z-index: 3;
+  width: 450px;
+  -webkit-box-shadow: 0 2px 10px 0 rgba(170, 170, 170, 0.5);
+  box-shadow: 0 2px 10px 0 rgba(170, 170, 170, 0.5);
+
+  .card-header{
+    font-size: 1.5em;
+    .pronunciation{
+      span{
+        border-radius: 15px;
+        display: block;
+        height: 30px;
+        width: 70px;
+        cursor: pointer;
+        background: #cccccc;
+        padding: 3px 10px;
+        margin: 0 10px;
+        text-align: center;
+        font-size: 16px;
+        color: black;
+      }
+      span:hover{
+        background: #28bea0;
+        color: #fff;
+      }
+      i{}
+    }
+  }
+  .web-word{
+    font-size: 1.2em;
+    color: #28bea0;
+  }
+}

@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block css_file %}{% endblock %}
+    {% block js_file %}{% endblock %}
+</head>
+<body>
+<header>
+    <div class="header container-fluid">
+        <div class="container h-100">
+            <ul class="row nav nav-pills w-100">
+                <li class="col-1 nav-item h-100 p-0"><a href="" class="nav-link w-100 h-100 d-block">Word</a></li>
+                <li class="col-1 nav-item h-100 p-0"><a href="" class="nav-link w-100 h-100 d-block">Essay</a></li>
+                <li class="col-1 nav-item h-100 p-0"><a href="" class="nav-link w-100 h-100 d-block">About</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+{% block main %}{% endblock %}
+{% block aside %}{% endblock %}
+<footer>
+
+</footer>
+</body>
+</html>

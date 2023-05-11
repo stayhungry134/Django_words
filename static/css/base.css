@@ -1,0 +1,23 @@
+.header {
+  background: #d3f2ec;
+  font-weight: bold;
+  height: 60px;
+  align-items: center;
+  font-style: italic;
+}
+.header > div {
+  height: 100%;
+  font-size: 20px;
+}
+.header .row {
+  height: 100%;
+}
+.header .row .nav-link {
+  color: #e39a64;
+  line-height: 44px;
+}
+.header .row .nav-link:hover {
+  color: #ea7a6d;
+}
+
+/*# sourceMappingURL=base.css.map */
