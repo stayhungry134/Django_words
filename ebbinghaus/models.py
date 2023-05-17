@@ -18,11 +18,11 @@ def validate_bool_list(value_list):
 
 # Create your models here.
 class LearnWords(models.Model):
-    word = models.CharField(max_length=128, verbose_name='单词')
+    word = models.CharField(max_length=128, verbose_name='单词', db_index=True)
     meaning = models.CharField(max_length=512, verbose_name='词义')
-    init_date = models.DateField(auto_now_add=True, verbose_name='初次学习单词时间')
+    init_date = models.DateField(auto_now_add=True, verbose_name='初次学习单词时间', db_index=True)
     last_review = models.DateField(blank=True, null=True, verbose_name='上次复习时间')
-    next_date = models.DateField(verbose_name='下次学习单词时间')
+    next_date = models.DateField(verbose_name='下次学习单词时间', db_index=True)
     # 复习时间列表 [1, 2, 4, 7, 15, 30, 60, 90, 180]
     review_times = models.CharField(validators=[validate_bool_list], max_length=256, verbose_name='复习时间列表')
     # review_times = ArrayField(models.BooleanField(default=False, verbose_name='复习日期'), size=9)
