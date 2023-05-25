@@ -1,0 +1,10 @@
+.idea
+.gitignore
+db.sqlite3
+*.pyc
+log
+*/migrations/*
+!/migrations/__init__.py
+ebbinghaus/config.yaml
+static/admin
+static/mdeditor

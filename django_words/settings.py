@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api',
     'mdeditor',
     'ebbinghaus',
 ]
@@ -137,3 +136,47 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # MDeditor
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+# 日志配置
+LOG_DIR = os.path.join(BASE_DIR, 'log')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'ebbinghaus': {
+            'level': 'INFO',  # 设置日志级别
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'ebbinghaus.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 设置日志文件大小上限
+            'backupCount': 5,  # 设置备份日志文件的数量
+            'formatter': 'standard',
+        },
+        'error': {
+            'level': 'ERROR',  # 设置日志级别
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'error.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 设置日志文件大小上限
+            'backupCount': 5,  # 设置备份日志文件的数量
+            'formatter': 'standard',
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['error'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'ebbinghaus': {
+            'handlers': ['ebbinghaus'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s - %(levelname)s - %(message)s'
+        },
+    },
+}
+
