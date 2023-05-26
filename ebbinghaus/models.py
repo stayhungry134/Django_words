@@ -4,6 +4,10 @@ from django.utils.translation import gettext_lazy as _
 from mdeditor.fields import MDTextField
 
 
+def review_times_default():
+    return [False] * 9
+
+
 # Create your models here.
 class LearnWords(models.Model):
     word = models.CharField(max_length=128, verbose_name='单词', db_index=True, unique=True)
@@ -15,7 +19,7 @@ class LearnWords(models.Model):
     us_audio = models.CharField(max_length=256, verbose_name='美式发音')
     familiarity = models.IntegerField(verbose_name='熟悉程度', default=0)
     # 复习时间列表 [1, 2, 4, 7, 15, 30, 60, 90, 180]
-    review_times = models.JSONField(verbose_name='复习时间列表', default=[False] * 9)
+    review_times = models.JSONField(verbose_name='复习时间列表', default=review_times_default)
     # review_times = ArrayField(models.BooleanField(default=False, verbose_name='复习日期'), size=9)
 
     def __str__(self):

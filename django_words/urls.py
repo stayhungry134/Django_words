@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/ebbinghaus/', include('ebbinghaus.urls', namespace='ebbinghaus')),
+    path('word_api/admin/', admin.site.urls),
+    path('word_api/ebbinghaus/', include('ebbinghaus.urls', namespace='ebbinghaus')),
 ]

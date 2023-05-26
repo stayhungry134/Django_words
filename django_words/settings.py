@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import pyaml
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -79,12 +80,15 @@ WSGI_APPLICATION = 'django_words.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': BASE_DIR / 'db.sqlite3',
+     }
 }
-
+with open(f'{BASE_DIR}/config/database.yaml', 'r', encoding='utf-8') as f:
+    database = pyaml.yaml.safe_load(f)
+    if database:
+        DATABASES['default'] = database
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -121,13 +125,13 @@ USE_TZ = False  # 关闭时区
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = ['static']
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/word_static/'
+# STATICFILES_DIRS = ['word_static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'word_static')
 
 # Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-MEDIA_URL = '/media/'
+MEDIA_URL = '/word_media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

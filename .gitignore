@@ -3,8 +3,11 @@
 db.sqlite3
 *.pyc
 log
+config
+*.yaml
 */migrations/*
 !/migrations/__init__.py
 ebbinghaus/config.yaml
-static/admin
-static/mdeditor
+word_static/admin
+word_static/mdeditor
+word_static/rest_framework

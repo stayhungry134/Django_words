@@ -22,3 +22,8 @@ class LearnWordsSerializer(serializers.ModelSerializer):
             LearnWords.objects.filter(word=word).update(**self.validated_data)
         else:
             LearnWords.objects.create(**self.validated_data)
+
+    def update(self, **kwargs):
+        word = self.validated_data['word']
+        review_times = self.validated_data['review_times']
+        LearnWords.objects.filter(word=word).update(review_times=review_times)
