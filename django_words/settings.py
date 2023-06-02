@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 import pyaml
+import platform
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,11 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-&ho^g(zjf*cqet*n2ek*a49c%mu$a!w$z)bgiu+s4qzth7=!oi'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-&ho^g(zjf*cqet*n2ek*a49c%mu$a!w$z)bgiu+s4qzth7=!oi')
+SECRET_KEY = 'django-insecure-&ho^g(zjf*cqet*n2ek*a49c%mu$a!w$z)bgiu+s4qzth7=!oi'
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-&ho^g(zjf*cqet*n2ek*a49c%mu$a!w$z)bgiu+s4qzth7=!oi')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -85,10 +86,11 @@ DATABASES = {
          'NAME': BASE_DIR / 'db.sqlite3',
      }
 }
-with open(f'{BASE_DIR}/config/database.yaml', 'r', encoding='utf-8') as f:
-    database = pyaml.yaml.safe_load(f)
-    if database:
-        DATABASES['default'] = database
+if platform.system().lower() == 'linux':
+    with open(f'{BASE_DIR}/config/database.yaml', 'r', encoding='utf-8') as f:
+        database = pyaml.yaml.safe_load(f)
+        if database:
+            DATABASES['default'] = database
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
