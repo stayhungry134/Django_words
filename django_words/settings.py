@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-&ho^g(zjf*cqet*n2ek*a49c%mu$a!w$z)bgiu+s4qzth7=!oi
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-&ho^g(zjf*cqet*n2ek*a49c%mu$a!w$z)bgiu+s4qzth7=!oi')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+if platform.system().lower() == 'linux':
+    DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -128,8 +130,8 @@ USE_TZ = False  # 关闭时区
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/word_static/'
-# STATICFILES_DIRS = ['word_static']
-STATIC_ROOT = os.path.join(BASE_DIR, 'word_static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'word_static')
+STATICFILES_DIRS = ['word_static']
 
 # Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')

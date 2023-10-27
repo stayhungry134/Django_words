@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import LearnWords, TodayArticle
+from .models import LearnWords, LearnArticle
 
 
 # Register your models here.
@@ -12,4 +12,4 @@ class TodayArticleAdmin(admin.ModelAdmin):
 
 
 admin.site.register(LearnWords)
-admin.site.register(TodayArticle, TodayArticleAdmin)
+admin.site.register(LearnArticle, TodayArticleAdmin)

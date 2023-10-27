@@ -60,7 +60,7 @@ class LearnWords(models.Model):
                             update_fields=update_fields)
 
 
-class TodayArticle(models.Model):
+class LearnArticle(models.Model):
     title = models.CharField(max_length=128, verbose_name='标题')
     content = MDTextField(verbose_name='内容')
     init_date = models.DateField(auto_now_add=True, verbose_name='生成日期')
@@ -69,5 +69,14 @@ class TodayArticle(models.Model):
     def __str__(self):
         return f"{self.title}---{self.init_date.isoformat()}"
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        import datetime
+        today = datetime.date.today()
+        self.last_review = today
+        return super().save(force_insert=force_insert,
+                            force_update=force_update,
+                            using=using,
+                            update_fields=update_fields)
+
     class Meta:
-        verbose_name = 'today_article'
+        verbose_name = 'learn_article'

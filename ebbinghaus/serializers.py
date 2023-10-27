@@ -7,7 +7,7 @@ Description:
 """
 from rest_framework import serializers
 
-from ebbinghaus.models import LearnWords
+from ebbinghaus.models import LearnWords, LearnArticle
 
 
 class LearnWordsSerializer(serializers.ModelSerializer):
@@ -27,3 +27,20 @@ class LearnWordsSerializer(serializers.ModelSerializer):
         word = self.validated_data['word']
         review_times = self.validated_data['review_times']
         LearnWords.objects.filter(word=word).update(review_times=review_times)
+
+
+class TextFieldToJSONField(serializers.JSONField):
+    def to_representation(self, value):
+        import re
+        # 将TextField的值转换为JSON格式
+        paragraphs = re.split(r'\n+', value)
+        article_words = [paragraph.split(' ') for paragraph in paragraphs]
+        return serializers.JSONField().to_representation(article_words)
+
+
+class TodayArticleSerializer(serializers.ModelSerializer):
+    content = TextFieldToJSONField()
+    class Meta:
+        model = LearnArticle
+        fields = ('id', 'title', 'content', 'init_date', 'last_review')
+        content_type = 'application/json'
