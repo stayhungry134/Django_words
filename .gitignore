@@ -11,3 +11,5 @@ ebbinghaus/config.yaml
 word_static/admin
 word_static/mdeditor
 word_static/rest_framework
+*.log
+*.pid
