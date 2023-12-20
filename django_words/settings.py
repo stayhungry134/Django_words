@@ -159,6 +159,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 5,  # 设置日志文件大小上限
             'backupCount': 5,  # 设置备份日志文件的数量
             'formatter': 'standard',
+            'encoding': 'utf-8',
         },
         'error': {
             'level': 'ERROR',  # 设置日志级别
@@ -167,6 +168,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 5,  # 设置日志文件大小上限
             'backupCount': 5,  # 设置备份日志文件的数量
             'formatter': 'standard',
+            'encoding': 'utf-8',
         }
     },
     'loggers': {
