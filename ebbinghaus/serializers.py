@@ -30,6 +30,9 @@ class LearnWordsSerializer(serializers.ModelSerializer):
 
 
 class TextFieldToJSONField(serializers.JSONField):
+    """
+    将TextField的值转换为JSON格式
+    """
     def to_representation(self, value):
         import re
         # 将TextField的值转换为JSON格式

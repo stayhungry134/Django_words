@@ -1,6 +1,4 @@
 from django.http import Http404
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator
@@ -74,11 +72,9 @@ class Articles(APIView):
 class Article(APIView):
     """用于处理文章的视图"""
     def get(self, request, id):
-        import re
         from django.shortcuts import get_object_or_404
         from .serializers import TodayArticleSerializer
-        from .models import LearnArticle, LearnWords
-        import markdown
+        from .models import LearnArticle
         article = get_object_or_404(LearnArticle, pk=id)
         if not article:
             return Http404
@@ -99,16 +95,9 @@ class Article(APIView):
         # article.content = re.split(r'\n+', article.content)
         # article.content = [paragraph.split(' ') for paragraph in article.content]
         serializer = TodayArticleSerializer(article)
-        words = LearnWords.objects.filter(init_date=article.init_date)
-        word_dic = {word.__str__(): True for word in words}
-        for chapter, paragraph in enumerate(serializer.data.get('content')):
-            for index, word in enumerate(paragraph):
-                if word_dic.get(word):
-                    serializer.data['content'][chapter][index] = f'__{word}'
         return Response(serializer.data)
 
     def post(self, request):
-        from .models import LearnArticle
         print(request.data)
         if not request.data or not request.data.get('words'):
             return Response("你提交了一个空的post请求")
