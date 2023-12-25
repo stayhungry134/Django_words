@@ -29,7 +29,7 @@ class LearnWordsView(APIView):
         total_count = queryset.count()
         response = {
             'total_count': total_count,
-            'words': {word_item['word']: word_item for word_item in serializer.data},
+            'word': {word_item['word']: word_item for word_item in serializer.data},
         }
         return Response(response)
 
@@ -78,29 +78,13 @@ class Article(APIView):
         article = get_object_or_404(LearnArticle, pk=id)
         if not article:
             return Http404
-        # article.content = markdown.Markdown().convert(article.content)
-        # print(markdown.Markdown().convert(article.content))
-        # 使用 span 标签包裹单词
-        # article.content = article.content.replace(' ', '</span> <span class="word">')
-        # article.content = article.content.replace(',</span>', '</span>, ')
-        # article.content = article.content.replace('.</span>', '</span>. ')
-        # article.content = article.content.replace('<p>', '<p class="my-3"><span class="word">')
-        # article.content = article.content.replace('</p>', '</span></p>')
-        # # 查询date的单词
-        # words = LearnWords.objects.filter(init_date=article.init_date)
-        # # 将文章中的今日单词标记出来
-        # for word in words:
-        #     article.content = article.content.replace(f'<span class="word">{word.word}',
-        #                                               f'<span class="word today-word">{word.word}')
-        # article.content = re.split(r'\n+', article.content)
-        # article.content = [paragraph.split(' ') for paragraph in article.content]
         serializer = TodayArticleSerializer(article)
         return Response(serializer.data)
 
     def post(self, request):
         print(request.data)
-        if not request.data or not request.data.get('words'):
+        if not request.data or not request.data.get('word'):
             return Response("你提交了一个空的post请求")
-        words = request.data.get('words')
+        words = request.data.get('word')
 
         return Response("我被调用了")

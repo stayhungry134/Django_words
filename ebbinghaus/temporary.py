@@ -17,7 +17,7 @@ from ebbinghaus.models import LearnWords, TodayArticle
 def index(request):
     """主页"""
     # 重定向到今日单词
-    return redirect('ebbinghaus:words')
+    return redirect('ebbinghaus:word')
 
 
 def get_words(request):

@@ -7,7 +7,7 @@ config
 *.yaml
 */migrations/*
 !*/migrations/__init__.py
-ebbinghaus/config.yaml
+word/config.yaml
 word_static/admin
 word_static/mdeditor
 word_static/rest_framework
