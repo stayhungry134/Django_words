@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'base',
     'word',
     'mdeditor',
-    'ebbinghaus',
 ]
 
 MIDDLEWARE = [

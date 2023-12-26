@@ -49,7 +49,7 @@ def review_times_default():
 
 
 class ForgettingCurve(models.Model):
-    word = models.ForeignKey(NewWord, on_delete=models.CASCADE, verbose_name='单词', unique=True)
+    word = models.OneToOneField(NewWord, on_delete=models.CASCADE, verbose_name='单词')
     last_review = models.DateField(null=True, blank=True, verbose_name='上次复习时间')
     next_review = models.DateField(null=True, blank=True, verbose_name='下次复习时间')
     familiarity = models.IntegerField(default=0, verbose_name='熟悉程度')
