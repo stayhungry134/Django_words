@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+from datetime import timedelta
+
 import pyaml
 import platform
 from pathlib import Path
@@ -42,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',  # django-celery-results 库
     'rest_framework',
+    'mdeditor',
     'base',
     'word',
     'mdeditor',
@@ -84,10 +88,10 @@ WSGI_APPLICATION = 'django_words.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-     'default': {
+    'default': {
          'ENGINE': 'django.db.backends.sqlite3',
          'NAME': BASE_DIR / 'db.sqlite3',
-     }
+     },
 }
 if platform.system().lower() == 'linux':
     with open(f'{BASE_DIR}/config/database.yaml', 'r', encoding='utf-8') as f:
@@ -153,13 +157,22 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'ebbinghaus': {
+        'handlers': {
             'level': 'INFO',  # 设置日志级别
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_DIR, 'ebbinghaus.log'),
+            'filename': os.path.join(LOG_DIR, 'handlers.log'),
             'maxBytes': 1024 * 1024 * 5,  # 设置日志文件大小上限
             'backupCount': 5,  # 设置备份日志文件的数量
             'formatter': 'standard',
+            'encoding': 'utf-8',
+        },
+        'celery': {
+            'level': 'INFO',  # 设置日志级别
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'celery.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 设置日志文件大小上限
+            'backupCount': 5,  # 设置备份日志文件的数量
+            'formatter': 'standard',  # 使用哪种formatters日志格式
             'encoding': 'utf-8',
         },
         'error': {
@@ -173,21 +186,52 @@ LOGGING = {
         }
     },
     'loggers': {
-        '': {
-            'handlers': ['error'],
+        'django': {
+            'handlers': ['handlers'],
             'level': 'ERROR',
             'propagate': True,
         },
-        'ebbinghaus': {
-            'handlers': ['ebbinghaus'],
+        'celery': {
+            'handlers': ['celery'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'error': {
+            'handlers': ['error'],
             'level': 'INFO',
             'propagate': True,
         },
     },
     'formatters': {
         'standard': {
-            'format': '%(asctime)s - %(levelname)s - %(message)s'
+            'format': '[%(asctime)s] [%(levelname)s] [%(module)s:%(lineno)d] %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
         },
     },
 }
 
+# ---------------------------------
+# -----------定时任务设置-----------
+# ---------------------------------
+# Celery Configuration Options
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_TASK_TRACK_STARTED = True
+# 限制celery任务执行时间，# 单个任务的运行时间限制，否则会被杀死
+CELERY_TASK_TIME_LIMIT = 60*30
+# 每个worker最多执行{num}数量任务
+CELERY_MAX_TASKS_PER_CHILD = 200
+# 表示链接redis
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+# 配置 Celery 单独的日志
+CELERYD_HIJACK_ROOT_LOGGER = False
+CELERYD_LOG_FILE = os.path.join(LOG_DIR, 'celery.log')
+CELERYD_LOG_LEVEL = 'INFO'
+# celery 的备份设置
+CELERY_CACHE_BACKEND = 'default'
+# celery 的定时任务
+CELERY_BEAT_SCHEDULE = {
+    'article_task': {
+        'task': 'reading.tasks.shanbay_article',
+        'schedule': timedelta(minutes=60 * 24),
+    },
+}
