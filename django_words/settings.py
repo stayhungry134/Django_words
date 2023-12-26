@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'mdeditor',
     'base',
     'word',
-    'mdeditor',
+    'reading',
 ]
 
 MIDDLEWARE = [
