@@ -22,5 +22,6 @@ from django_words import settings
 urlpatterns = [
     path('word_api/admin/', admin.site.urls),
     path('word_api/word/', include('word.urls', namespace='word')),
+    path('word_api/reading/', include('reading.urls', namespace='reading')),
     path('word_api/ebbinghaus/', include('ebbinghaus.urls', namespace='ebbinghaus')),
 ]

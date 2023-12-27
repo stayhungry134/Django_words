@@ -29,21 +29,3 @@ class LearnWordsSerializer(serializers.ModelSerializer):
         LearnWords.objects.filter(word=word).update(review_times=review_times)
 
 
-class TextFieldToJSONField(serializers.JSONField):
-    """
-    将TextField的值转换为JSON格式
-    """
-    def to_representation(self, value):
-        import re
-        # 将TextField的值转换为JSON格式
-        paragraphs = re.split(r'\n+', value)
-        article_words = [paragraph.split(' ') for paragraph in paragraphs]
-        return serializers.JSONField().to_representation(article_words)
-
-
-class TodayArticleSerializer(serializers.ModelSerializer):
-    content = TextFieldToJSONField()
-    class Meta:
-        model = LearnArticle
-        fields = ('id', 'title', 'content', 'init_date', 'last_review')
-        content_type = 'application/json'
