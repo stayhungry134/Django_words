@@ -135,11 +135,11 @@ USE_TZ = False  # 关闭时区
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/word_static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'word_static')
-STATICFILES_DIRS = ['word_static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'word_static')
+# STATICFILES_DIRS = ['word_static']
 
 # Media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'word_media')
 MEDIA_URL = '/word_media/'
 
 # Default primary key field type

@@ -16,10 +16,13 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve
 
 from django_words import settings
 
 urlpatterns = [
+    path('word_static/<path:path>', serve, {'document_root': settings.STATIC_ROOT},),  # 处理静态文件
+    path('word_media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT},),  # 处理媒体文件
     path('word_api/admin/', admin.site.urls),
     path('word_api/word/', include('word.urls', namespace='word')),
     path('word_api/reading/', include('reading.urls', namespace='reading')),
