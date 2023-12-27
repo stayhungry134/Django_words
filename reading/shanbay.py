@@ -112,7 +112,7 @@ class Article:
                             sentence['#text'] = sentence['#text'].replace('\n', '')
                         else:
                             sentence = sentence.replace('\n', '')
-                        content.append(sentence)
+                        content.append(sentence['#text'])
                 else:
                     sent['#text'] = sent['#text'].replace('\n', '')
             # 增加段落标记
@@ -121,13 +121,14 @@ class Article:
         # 保存图片
         if img_url:
             img_name = img_url.split('/')[-1]
-            img_path = os.path.join(BASE_DIR, 'media/article', img_name)
+            img_path = os.path.join(BASE_DIR, 'word_media', 'article', img_name)
             if not os.path.exists(img_path):
                 img_response = requests.get(img_url, cookies=self.cookies, headers=self.headers)
                 with open(img_path, 'wb') as f:
                     f.write(img_response.content)
-            no_content_article.image = img_path
+            no_content_article.image = f"/article/{img_name}"
 
         # 保存文章内容
-        content = ''.join(content)
+        content = ' '.join(content)
         no_content_article.content = content
+        no_content_article.save()

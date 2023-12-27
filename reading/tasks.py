@@ -13,7 +13,14 @@ from datetime import datetime, timedelta
 
 
 @shared_task
-def shanbay_article():
-    from shanbay import Article
+def shanbay_article_list():
+    from reading.shanbay import Article
     article = Article()
     article.get_article_list()
+
+
+@shared_task
+def shanbay_article_content():
+    from reading.shanbay import Article
+    article = Article()
+    article.get_article_content()

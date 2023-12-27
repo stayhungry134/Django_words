@@ -230,8 +230,12 @@ CELERYD_LOG_LEVEL = 'INFO'
 CELERY_CACHE_BACKEND = 'default'
 # celery 的定时任务
 CELERY_BEAT_SCHEDULE = {
-    'article_task': {
-        'task': 'reading.tasks.shanbay_article',
-        'schedule': timedelta(minutes=60 * 24),
+    'shanbay_article_list': {
+        'task': 'reading.tasks.shanbay_article_list',
+        'schedule': timedelta(minutes=60 * 12),
+    },
+    'shanbay_article_content': {
+        'task': 'reading.tasks.shanbay_article_content',
+        'schedule': timedelta(minutes=30),
     },
 }
