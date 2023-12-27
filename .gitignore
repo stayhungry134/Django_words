@@ -11,5 +11,6 @@ word/config.yaml
 word_static/admin
 word_static/mdeditor
 word_static/rest_framework
+word_media/*
 *.log
 *.pid
