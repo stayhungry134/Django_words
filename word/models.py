@@ -35,6 +35,7 @@ class NewWord(BaseModel):
     class Meta:
         verbose_name = '新单词'
         verbose_name_plural = verbose_name
+        ordering = ('-create_time',)
 
     def __str__(self):
         return self.word
@@ -59,6 +60,7 @@ class ForgettingCurve(models.Model):
     class Meta:
         verbose_name = '遗忘曲线'
         verbose_name_plural = verbose_name
+        ordering = ('-next_review',)
 
     def __str__(self):
         return self.word
