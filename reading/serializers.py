@@ -26,6 +26,8 @@ class TextFieldToJSONField(serializers.JSONField):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    last_review = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     content = TextFieldToJSONField()
 
     class Meta:
