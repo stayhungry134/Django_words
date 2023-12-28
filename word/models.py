@@ -49,7 +49,7 @@ def review_times_default():
     return []
 
 
-class ForgettingCurve(models.Model):
+class ReviewRecord(models.Model):
     word = models.OneToOneField(NewWord, on_delete=models.CASCADE, verbose_name='单词')
     last_review = models.DateField(null=True, blank=True, verbose_name='上次复习时间')
     next_review = models.DateField(null=True, blank=True, verbose_name='下次复习时间')
@@ -58,7 +58,7 @@ class ForgettingCurve(models.Model):
     review_times_list = models.JSONField(default=review_times_default, verbose_name='复习时间列表')
 
     class Meta:
-        verbose_name = '遗忘曲线'
+        verbose_name = '复习记录'
         verbose_name_plural = verbose_name
         ordering = ('-next_review',)
 
@@ -68,12 +68,13 @@ class ForgettingCurve(models.Model):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
+        # 记忆次数加 1
         self.review_times += 1
-        # 计算熟悉程度，使用函数 y = 1.3^(0.5*x)
-        self.familiarity = int(round(1.3 ** (0.5 * self.review_times), 0))
         # 相隔的天数，
         today = datetime.date.today()
-        self.next_review = today + datetime.timedelta(days=self.familiarity)
+        self.last_review = today
+        interval = int(1.8 ** self.familiarity)
+        self.next_review = today + datetime.timedelta(days=interval)
         times_list: list = self.review_times_list or review_times_default()
         times_list.append(today.isoformat())
         self.review_times_list = times_list

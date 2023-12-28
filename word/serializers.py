@@ -8,7 +8,7 @@ Description:
 from rest_framework import serializers
 
 from base.serializers import BaseModelSerializer
-from word.models import NewWord, ForgettingCurve
+from word.models import NewWord, ReviewRecord
 
 
 class NewWordSerializer(BaseModelSerializer):
@@ -18,8 +18,10 @@ class NewWordSerializer(BaseModelSerializer):
         content_type = 'application/json'
 
 
-class ForgettingCurveSerializer(serializers.ModelSerializer):
+class ReviewRecordSerializer(serializers.ModelSerializer):
+    word = NewWordSerializer()
+
     class Meta:
-        model = ForgettingCurve
+        model = ReviewRecord
         fields = ('word', 'last_review', 'next_review', 'familiarity', 'review_times')
         content_type = 'application/json'

@@ -10,8 +10,8 @@ import datetime
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from word.models import NewWord, ForgettingCurve
-from word.serializers import NewWordSerializer
+from word.models import NewWord, ReviewRecord
+from word.serializers import NewWordSerializer, ReviewRecordSerializer
 
 
 class NewWordView(APIView):
