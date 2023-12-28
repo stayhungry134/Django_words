@@ -14,4 +14,5 @@ class BaseModelSerializer(serializers.ModelSerializer):
     """
     序列化的基类
     """
-    pass
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
