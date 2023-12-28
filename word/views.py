@@ -65,3 +65,36 @@ class WordView(APIView):
         remind_word(new_word)
         return Response(meaning)
 
+
+class RemindView(APIView):
+    """
+    记忆单词
+    """
+    def get(self, request):
+        """
+        获取单词列表
+        :param request:
+        :return:
+        """
+        # 获取今天需要复习的单词
+        today = datetime.date.today()
+        today_words = ReviewRecord.objects.filter(next_review__lte=today)
+        serializer = ReviewRecordSerializer(today_words, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        """
+        记忆单词
+        :param request:
+        :return:
+        """
+        from word.utils import review_word
+
+        word_list = request.data.get('word_list')
+        if not word_list:
+            return Response('word_list 参数不能为空')
+        review_words = NewWord.objects.filter(word__in=word_list)
+        for word_obj in review_words:
+            review_word(word_obj)
+
+        return Response('success')
