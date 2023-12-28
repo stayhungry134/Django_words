@@ -13,4 +13,5 @@ app_name = 'reading'
 
 urlpatterns = [
     path('article/', views.ArticleView.as_view(), name='文章'),
+    path('articles/', views.ArticlesView.as_view(), name='文章列表'),
 ]
