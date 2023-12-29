@@ -7,6 +7,7 @@ Description:
 """
 import datetime
 
+from django.core.paginator import Paginator
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -78,9 +79,20 @@ class RemindView(APIView):
         """
         # 获取今天需要复习的单词
         today = datetime.date.today()
+        page_size = request.GET.get('page_size', 20)
+        page = request.GET.get('page', 1)
         today_words = ReviewRecord.objects.filter(next_review__lte=today)
-        serializer = ReviewRecordSerializer(today_words, many=True)
-        return Response(serializer.data)
+        res_pager = Paginator(today_words, page_size).get_page(page)
+        serializer = ReviewRecordSerializer(res_pager, many=True)
+        return Response({
+            'page': page,
+            'has_previous': res_pager.has_previous(),
+            'has_next': res_pager.has_next(),
+            'total': today_words.count(),
+            'items': serializer.data,
+            'page_num': res_pager.paginator.num_pages,
+            'page_size': page_size,
+        })
 
     def post(self, request):
         """

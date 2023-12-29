@@ -23,5 +23,5 @@ class ReviewRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReviewRecord
-        fields = ('word', 'last_review', 'next_review', 'familiarity', 'review_times')
+        fields = ('id', 'word', 'last_review', 'next_review', 'familiarity', 'review_times')
         content_type = 'application/json'

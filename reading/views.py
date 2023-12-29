@@ -41,15 +41,15 @@ class ArticlesView(APIView):
         articles = Article.objects.all().order_by('-last_review')
         page_size = request.GET.get('page_size', 10)
         page = request.GET.get('page', 1)
-        articles_pager = Paginator(articles, page_size).get_page(page)
-        serializer = ArticleSerializer(articles_pager, many=True, context={'res_type': 'list'})
+        res_pager = Paginator(articles, page_size).get_page(page)
+        serializer = ArticleSerializer(res_pager, many=True, context={'res_type': 'list'})
 
         return Response({
             'page': page,
-            'has_previous': articles_pager.has_previous(),
-            'has_next': articles_pager.has_next(),
+            'has_previous': res_pager.has_previous(),
+            'has_next': res_pager.has_next(),
             'total': articles.count(),
-            'articles': serializer.data,
-            'page_num': articles_pager.paginator.num_pages,
+            'items': serializer.data,
+            'page_num': res_pager.paginator.num_pages,
             'page_size': page_size,
         })
