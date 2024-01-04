@@ -6,6 +6,7 @@ author: Ethan
 Description: 
 """
 import datetime
+import re
 
 from django.core.paginator import Paginator
 from rest_framework.response import Response
@@ -26,6 +27,8 @@ class WordView(APIView):
 
         from word.utils import remind_word
         word = request.GET.get('word', '')
+        # 去除单词两边的符号
+        word = re.sub(r'^[^a-zA-Z]+|[^a-zA-Z]+$', '', word)
         if word == '':
             raise "word 参数不能为空"
         word_data = NewWord.objects.filter(word=word).first()
@@ -53,7 +56,11 @@ class WordView(APIView):
         word_data = requests.post(url=url, params=params, headers=headers, data=data).json()
         meaning = word_data['ec']['word']['trs']
         # 柯林斯解释
-        collins = word_data['collins']['collins_entries']
+        collins = None
+        try:
+            collins = word_data['collins']['collins_entries'][0]['entries']['entry']
+        except:
+            pass
         new_word = NewWord(
             word=word,
             meaning=meaning,
@@ -71,6 +78,7 @@ class RemindView(APIView):
     """
     记忆单词
     """
+
     def get(self, request):
         """
         获取单词列表
