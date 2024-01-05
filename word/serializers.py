@@ -14,7 +14,7 @@ from word.models import NewWord, ReviewRecord
 class NewWordSerializer(BaseModelSerializer):
     class Meta:
         model = NewWord
-        fields = ('id', 'word', 'meaning', 'collins', 'uk_audio', 'us_audio')
+        fields = ('id', 'word', 'meaning', 'collins', 'uk_audio', 'uk_phone', 'us_audio', 'us_phone')
         content_type = 'application/json'
 
 
