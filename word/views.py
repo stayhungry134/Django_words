@@ -54,7 +54,10 @@ class WordView(APIView):
             'Referer': 'https://dict.youdao.com/result'
         }
         word_data = requests.post(url=url, params=params, headers=headers, data=data).json()
-        meaning = word_data['ec']['word']['trs']
+        res_word = word_data['ec']['word']
+        meaning = res_word['trs']
+        us_phone = res_word.get('usphone', None)
+        uk_phone = res_word.get('ukphone', None)
         # 柯林斯解释
         collins = None
         try:
@@ -67,7 +70,9 @@ class WordView(APIView):
             collins=collins,
             tag=NewWord.TAG_ARTICLE,
             uk_audio=f'https://dict.youdao.com/dictvoice?audio={word}&type=1',
+            uk_phone=uk_phone,
             us_audio=f'https://dict.youdao.com/dictvoice?audio={word}&type=2',
+            us_phone=us_phone,
         )
         new_word.save()
         remind_word(new_word)

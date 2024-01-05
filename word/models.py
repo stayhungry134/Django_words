@@ -29,7 +29,9 @@ class NewWord(BaseModel):
     collins = models.JSONField(null=True, blank=True, verbose_name='柯林斯词典')
     tag = models.CharField(max_length=20, choices=TAG_CHOICES, default=TAG_OTHER, verbose_name='标签')
     uk_audio = models.CharField(max_length=200, null=True, blank=True, verbose_name='英式发音')
+    uk_phone = models.CharField(max_length=32, null=True, blank=True, verbose_name='英式音标')
     us_audio = models.CharField(max_length=200, null=True, blank=True, verbose_name='美式发音')
+    us_phone = models.CharField(max_length=32, null=True, blank=True, verbose_name='美式音标')
     notes = MDTextField(verbose_name='笔记')
 
     class Meta:
