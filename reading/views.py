@@ -32,6 +32,26 @@ class ArticleView(APIView):
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
 
+    def post(self, request):
+        """
+        用于处理文章的试图
+        :param request:
+        :return:
+        """
+        handle = request.data.get('handle', None)
+        article_id = request.data.get('article_id', None)
+        if not handle:
+            return Response({'msg': 'handle 参数不能为空'})
+        if not article_id:
+            return Response({'msg': 'id 参数不能为空'})
+        article = Article.objects.filter(id=article_id).first()
+        if not article:
+            return Response({'msg': '文章不存在'})
+        if handle == 'review':
+            article.review()
+
+        return Response({'msg': 'success'})
+
 
 class ArticlesView(APIView):
     """

@@ -34,7 +34,7 @@ class Article(BaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='文章分类')
     source = models.CharField(max_length=128, default='shanbay', verbose_name='文章来源')
     third_key = models.CharField(max_length=128, blank=True, null=True, verbose_name='第三方文章key')
-    last_review = models.DateField(blank=True, null=True, verbose_name='上次复习日期')
+    last_review = models.DateTimeField(blank=True, null=True, verbose_name='上次复习时间')
     length = models.IntegerField(blank=True, null=True, verbose_name='文章长度')
 
     class Meta:
@@ -43,6 +43,15 @@ class Article(BaseModel):
 
     def __str__(self):
         return self.title_en
+
+    def review(self):
+        """
+        复习文章
+        :return:
+        """
+        import datetime
+        self.last_review = datetime.datetime.now()
+        self.save()
 
 
 # class Book(BaseModel):
