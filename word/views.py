@@ -122,4 +122,4 @@ class RemindView(APIView):
         for word_obj in review_words:
             review_word(word_obj)
 
-        return Response('success')
+        return Response({'msg': 'success'})

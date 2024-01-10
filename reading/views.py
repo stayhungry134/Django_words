@@ -58,7 +58,7 @@ class ArticlesView(APIView):
     用于处理文章列表相关的请求
     """
     def get(self, request):
-        articles = Article.objects.all().order_by('-last_review')
+        articles = Article.objects.all().order_by('last_review')
         page_size = request.GET.get('page_size', 10)
         page = request.GET.get('page', 1)
         res_pager = Paginator(articles, page_size).get_page(page)
