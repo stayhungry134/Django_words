@@ -5,8 +5,11 @@ author: Ethan
 
 Description: 请求杂志相关的接口
 """
+import os
+
 import paramiko
 import yaml
+from django_words.settings import BASE_DIR
 
 
 class MagazineSync:
@@ -14,7 +17,8 @@ class MagazineSync:
     杂志同步类
     """
     def __init__(self):
-        magazine_user = yaml.load(open('config/magazine.yaml', encoding='utf-8'), Loader=yaml.FullLoader)['magazine']
+        yaml_path = os.path.join(BASE_DIR, 'reading/config/magazine.yaml')
+        magazine_user = yaml.load(open(yaml_path, encoding='utf-8'), Loader=yaml.FullLoader)['magazine']
         self.ssh = paramiko.SSHClient()
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh.connect(**magazine_user)
