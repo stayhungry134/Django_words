@@ -54,6 +54,32 @@ class Article(BaseModel):
         self.save()
 
 
+class MagazineCategory(BaseModel):
+    """杂志分类"""
+    name = models.CharField(max_length=128, verbose_name='杂志分类名称')
+
+    class Meta:
+        verbose_name = '杂志分类'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class Magazine(BaseModel):
+    """杂志"""
+    name = models.CharField(max_length=128, verbose_name='杂志名称')
+    cover = models.ImageField(upload_to='magazine', blank=True, null=True, verbose_name='杂志封面')
+    path = models.CharField(max_length=256, verbose_name='杂志路径', db_index=True)
+
+    class Meta:
+        verbose_name = '杂志'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
 # class Book(BaseModel):
 #     title = models.CharField(max_length=255)
 #     publication_date = models.DateField()

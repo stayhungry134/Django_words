@@ -24,3 +24,20 @@ def shanbay_article_content():
     from reading.shanbay import Article
     article = Article()
     article.get_article_content()
+
+
+@shared_task
+def magazine_sync_task():
+    from reading.magazine import MagazineSync
+    magazine_sync = MagazineSync()
+    magazine_sync.sync()
+
+
+@shared_task
+def generate_magazine_cover():
+    """
+    生成杂志封面
+    """
+    from reading.magazine import MagazineSync
+    magazine_sync = MagazineSync()
+    magazine_sync.generate_cover()
