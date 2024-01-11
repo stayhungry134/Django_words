@@ -69,6 +69,7 @@ class MagazineCategory(BaseModel):
 class Magazine(BaseModel):
     """杂志"""
     name = models.CharField(max_length=128, verbose_name='杂志名称')
+    category = models.ForeignKey(MagazineCategory, on_delete=models.SET_NULL, null=True, verbose_name='杂志分类')
     cover = models.ImageField(upload_to='magazine', blank=True, null=True, verbose_name='杂志封面')
     path = models.CharField(max_length=256, verbose_name='杂志路径', db_index=True)
 

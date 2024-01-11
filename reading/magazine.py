@@ -16,6 +16,7 @@ class MagazineSync:
     """
     杂志同步类
     """
+
     def __init__(self):
         yaml_path = os.path.join(BASE_DIR, 'reading/config/magazine.yaml')
         magazine_user = yaml.load(open(yaml_path, encoding='utf-8'), Loader=yaml.FullLoader)['magazine']
@@ -53,22 +54,24 @@ class MagazineSync:
         from reading.models import MagazineCategory, Magazine
         magazine_dic = self.get_magazine_list()
         for category, magazine_list in magazine_dic.items():
-            if not MagazineCategory.objects.filter(name=category).first():
-                MagazineCategory.objects.create(name=category)
+            category_obj = MagazineCategory.objects.filter(name=category).first()
+            if not category_obj:
+                category_obj = MagazineCategory(name=category)
+                category_obj.save()
                 # 如果之前没有这个分类，那么下面的所有杂志都需要重新同步
                 new_magazines = []
                 for magazine in magazine_list:
                     new_magazines.append(Magazine(name=magazine['name'],
-                                                  category=category,
+                                                  category=category_obj,
                                                   path=magazine['path']))
                 Magazine.objects.bulk_create(new_magazines)
             else:
                 new_magazines = []
-                exist_magazines = Magazine.objects.filter(category=category).values_list('path', flat=True)
+                exist_magazines = Magazine.objects.filter(category=category_obj).values_list('path', flat=True)
                 for magazine in magazine_list:
                     if magazine['path'] not in exist_magazines:
                         new_magazines.append(Magazine(name=magazine['name'],
-                                                      category=category,
+                                                      category=category_obj,
                                                       path=magazine['path']))
                 Magazine.objects.bulk_create(new_magazines)
 
@@ -76,10 +79,15 @@ class MagazineSync:
         """
         生成杂志封面
         """
+        from django.db.models import Q
         from reading.models import Magazine
         # 按需读取pdf第一页
-        magazines = Magazine.objects.filter(cover__isnull=True).first()
-
+        magazines = Magazine.objects.filter(Q(cover__isnull=True) | Q(cover='')).first()
+        if not magazines:
+            return
+        cover_path = self.get_magazine_cover(magazines.path)
+        magazines.cover = f"magazine/{cover_path}"
+        magazines.save()
 
     def get_magazine_cover(self, remote_path):
         """
@@ -90,7 +98,6 @@ class MagazineSync:
         import os
         from io import BytesIO
         from django_words.settings import MEDIA_ROOT
-        from PIL import Image
         import fitz
         chunk_size = 4096
         pdf_data = BytesIO()
@@ -108,5 +115,7 @@ class MagazineSync:
         pdf = fitz.open(stream=pdf_data.read())
         first_page = pdf[0]
         image = first_page.get_pixmap()
-        save_path = os.path.join(MEDIA_ROOT, 'magazine', remote_path.replace('/', '_'))
+        save_name = remote_path.replace('/', '_').replace(' ', '').replace('.pdf', '.jpg')
+        save_path = os.path.join(MEDIA_ROOT, 'magazine', save_name)
         image.save(save_path)
+        return save_name
