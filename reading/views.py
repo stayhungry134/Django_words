@@ -24,7 +24,8 @@ class ArticleView(APIView):
         article_id = request.query_params.get('id', None)
         if not article_id:
             today = datetime.date.today()
-            article = Article.objects.filter(Q(last_review__lte=today) | Q(last_review__isnull=True)).first()
+            article = (Article.objects.filter(Q(last_review__lte=today) | Q(last_review__isnull=True))
+                       .order_by('last_review').first())
         else:
             article = Article.objects.filter(id=article_id).first()
         if not article:
@@ -73,3 +74,21 @@ class ArticlesView(APIView):
             'page_num': res_pager.paginator.num_pages,
             'page_size': page_size,
         })
+
+
+class MagazineView(APIView):
+    pass
+
+
+class UploadMagazineView(APIView):
+    def post(self, request):
+        from django_words.settings import MEDIA_ROOT
+        files = request.FILES.getlist('file', None)
+        if not files:
+            return Response({'msg': '文件不能为空'})
+        file_name = request.POST.get('name', None)
+        with open(f"{MEDIA_ROOT}/magazine/{file_name}", 'wb') as f:
+            for file in files:
+                for chunk in file.chunks():
+                    f.write(chunk)
+        return Response({'msg': 'success'})
