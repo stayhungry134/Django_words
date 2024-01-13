@@ -12,6 +12,7 @@ app_name = 'reading'
 
 
 urlpatterns = [
+    path('category/', views.CategoryView.as_view(), name='分类'),
     path('article/', views.ArticleView.as_view(), name='文章'),
     path('articles/', views.ArticlesView.as_view(), name='文章列表'),
     path('magazine/', views.MagazineView.as_view(), name='杂志列表'),
