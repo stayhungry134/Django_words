@@ -30,7 +30,7 @@ class Article(BaseModel):
     title_en = models.CharField(max_length=256, verbose_name='文章英文标题')
     summary = models.CharField(max_length=1024, blank=True, null=True, verbose_name='文章摘要')
     content = MDTextField(verbose_name='文章内容')
-    image = models.ImageField(upload_to='article', blank=True, null=True, verbose_name='文章图片')
+    image = models.ImageField(upload_to='article_img', blank=True, null=True, verbose_name='文章图片')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='文章分类')
     source = models.CharField(max_length=128, default='shanbay', verbose_name='文章来源')
     third_key = models.CharField(max_length=128, blank=True, null=True, verbose_name='第三方文章key')
@@ -56,6 +56,7 @@ class Article(BaseModel):
 
 class MagazineCategory(BaseModel):
     """杂志分类"""
+    key = models.CharField(max_length=128, null=True, blank=True, verbose_name='杂志分类key')
     name = models.CharField(max_length=128, verbose_name='杂志分类名称')
 
     class Meta:
@@ -70,8 +71,9 @@ class Magazine(BaseModel):
     """杂志"""
     name = models.CharField(max_length=128, verbose_name='杂志名称')
     category = models.ForeignKey(MagazineCategory, on_delete=models.SET_NULL, null=True, verbose_name='杂志分类')
-    cover = models.ImageField(upload_to='magazine', blank=True, null=True, verbose_name='杂志封面')
-    path = models.CharField(max_length=256, verbose_name='杂志路径', db_index=True)
+    cover = models.ImageField(upload_to='magazine_cover', blank=True, null=True, verbose_name='杂志封面')
+    local_path = models.FileField(upload_to='magazine', blank=True, null=True, verbose_name='杂志文件')
+    remote_path = models.CharField(max_length=256, verbose_name='杂志路径', db_index=True)
 
     class Meta:
         verbose_name = '杂志'
