@@ -8,7 +8,7 @@ Description:
 from rest_framework import serializers
 
 from base.serializers import BaseModelSerializer
-from reading.models import Article
+from reading.models import Article, Magazine
 
 
 class CategoryField(serializers.RelatedField):
@@ -55,6 +55,13 @@ class ArticleListSerializer(BaseModelSerializer):
 
     class Meta:
         model = Article
-        fields = (
-            'id', 'title_en', 'title_cn', 'image', 'create_time', 'length')
+        fields = ('id', 'title_en', 'title_cn', 'image', 'create_time', 'length')
         content_type = 'application/json'
+
+
+class MagazineSerializer(BaseModelSerializer):
+    category = CategoryField(read_only=True)
+
+    class Meta:
+        model = Magazine
+        fields = ('id', 'name', 'local_path', 'category', 'cover', 'create_time', 'update_time')

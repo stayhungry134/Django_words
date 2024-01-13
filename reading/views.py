@@ -12,8 +12,24 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from reading.models import Article
-from reading.serializers import ArticleSerializer
+from reading.models import Article, Magazine, Category
+from reading.serializers import ArticleSerializer, MagazineSerializer
+
+
+class CategoryView(APIView):
+    """
+    用于处理文章分类相关的请求
+    """
+    def get(self, request):
+        category_classify = request.query_params.get('classify', None)
+        if not category_classify:
+            return Response({'msg': '分类不能为空'})
+        category = Category.objects.filter(classify=category_classify).all().values('id', 'key', 'name')
+        if not category:
+            return Response({'msg': '分类不存在'})
+        return Response({
+            'items': category
+        })
 
 
 class ArticleView(APIView):
@@ -23,7 +39,6 @@ class ArticleView(APIView):
     def get(self, request):
         article_id = request.query_params.get('id', None)
         if not article_id:
-            today = datetime.date.today()
             article = (Article.objects.filter().order_by('last_review').first())
         else:
             article = Article.objects.filter(id=article_id).first()
@@ -76,11 +91,46 @@ class ArticlesView(APIView):
 
 
 class MagazineView(APIView):
-    pass
+    """
+    用于处理杂志相关的请求
+    """
+    def get(self, request):
+        magazine_id = request.query_params.get('id', None)
+        if not magazine_id:
+            page_size = request.GET.get('page_size', 12)
+            page = request.GET.get('page', 1)
+            category_id = request.GET.get('category_id', None)
+            if not category_id:
+                category = Category.objects.filter(classify='magazine').first()
+            else:
+                category = Category.objects.filter(id=category_id).first()
+            magazines = Magazine.objects.filter(category=category).all()
+            res_pager = Paginator(magazines, page_size).get_page(1)
+            serializer = MagazineSerializer(res_pager, many=True)
+            return Response({
+                'page': page,
+                'has_previous': res_pager.has_previous(),
+                'has_next': res_pager.has_next(),
+                'total': magazines.count(),
+                'items': serializer.data,
+                'page_num': res_pager.paginator.num_pages,
+                'page_size': page_size,
+            })
+        else:
+            magazine = Magazine.objects.filter(id=magazine_id).first()
+        if not magazine:
+            return None
+        serializer = MagazineSerializer(magazine)
+        return Response({
+            'magazine': serializer.data
+        })
 
-
-class UploadMagazineView(APIView):
     def post(self, request):
+        """
+        用于处理杂志的试图
+        :param request:
+        :return:
+        """
         from django_words.settings import MEDIA_ROOT
         files = request.FILES.getlist('file', None)
         if not files:
@@ -91,3 +141,8 @@ class UploadMagazineView(APIView):
                 for chunk in file.chunks():
                     f.write(chunk)
         return Response({'msg': 'success'})
+
+
+class UpdateMagazineView(APIView):
+    def post(self, request):
+        pass
