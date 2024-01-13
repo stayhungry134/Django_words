@@ -119,7 +119,7 @@ class MagazineSync:
         pdf = fitz.open(stream=pdf_data.read())
         first_page = pdf[0]
         image = first_page.get_pixmap(dpi=300)
-        save_name = remote_path.replace('/', '_').replace(' ', '').replace('.pdf', '.jpg')
+        save_name = remote_path.replace('/', '_').replace(' ', '_').replace('.pdf', '.jpg')
         save_path = os.path.join(MEDIA_ROOT, 'reading/magazine_cover', save_name)
         image.save(save_path)
         return save_name
