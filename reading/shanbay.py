@@ -33,7 +33,7 @@ class Article:
         获取cookie
         :return:
         """
-        file_path = os.path.join(BASE_DIR, "reading/shanbay.yaml")
+        file_path = os.path.join(BASE_DIR, "reading/config/shanbay.yaml")
         file = open(file_path, encoding='utf-8')
         data = yaml.load(file, Loader=yaml.FullLoader)
         return data['cookies']
@@ -86,6 +86,7 @@ class Article:
         """
         import xmltodict
 
+        from django_words.settings import MEDIA_ROOT
         from reading.models import Article
         no_content_article = Article.objects.filter(Q(content__isnull=True) | Q(content__exact='')).first()
         if not no_content_article:
@@ -120,13 +121,14 @@ class Article:
 
         # 保存图片
         if img_url:
+            path_url = 'reading/article_img'
             img_name = img_url.split('/')[-1]
-            img_path = os.path.join(BASE_DIR, 'word_media', 'article', img_name)
+            img_path = os.path.join(MEDIA_ROOT, path_url, img_name)
             if not os.path.exists(img_path):
                 img_response = requests.get(img_url, cookies=self.cookies, headers=self.headers)
                 with open(img_path, 'wb') as f:
                     f.write(img_response.content)
-            no_content_article.image = f"/article/{img_name}"
+            no_content_article.image = f"/{path_url}/{img_name}"
 
         # 保存文章内容
         content = ' '.join(content)

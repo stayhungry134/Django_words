@@ -3,13 +3,9 @@ name: tasks
 create_time: 2023/12/26 13:17
 author: Ethan
 
-Description: 
+Description: 阅读模块的自动化
 """
-# your_app/tasks.py
-import logging
-
 from celery import shared_task
-from datetime import datetime, timedelta
 
 
 @shared_task
@@ -34,10 +30,10 @@ def magazine_sync_task():
 
 
 @shared_task
-def generate_magazine_cover():
+def generate_magazine():
     """
-    生成杂志封面
+    生成杂志封面，请求杂志
     """
     from reading.magazine import MagazineSync
     magazine_sync = MagazineSync()
-    magazine_sync.generate_cover()
+    magazine_sync.get_magazine()

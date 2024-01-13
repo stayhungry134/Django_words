@@ -51,43 +51,47 @@ class MagazineSync:
         同步杂志
         :return:
         """
-        from reading.models import MagazineCategory, Magazine
+        from reading.models import Category, Magazine
         magazine_dic = self.get_magazine_list()
         for category, magazine_list in magazine_dic.items():
-            category_obj = MagazineCategory.objects.filter(name=category).first()
+            category_key = category.replace(' ', '').replace('-', '').lower()
+            category_obj = Category.objects.filter(key=category_key).first()
             if not category_obj:
-                category_obj = MagazineCategory(name=category)
+                category_obj = Category(key=category_key, name=category, classify='magazine')
                 category_obj.save()
                 # 如果之前没有这个分类，那么下面的所有杂志都需要重新同步
                 new_magazines = []
                 for magazine in magazine_list:
                     new_magazines.append(Magazine(name=magazine['name'],
                                                   category=category_obj,
-                                                  path=magazine['path']))
+                                                  remote_path=magazine['path']))
                 Magazine.objects.bulk_create(new_magazines)
             else:
                 new_magazines = []
-                exist_magazines = Magazine.objects.filter(category=category_obj).values_list('path', flat=True)
+                exist_magazines = Magazine.objects.filter(category=category_obj).values_list('remote_path', flat=True)
                 for magazine in magazine_list:
                     if magazine['path'] not in exist_magazines:
                         new_magazines.append(Magazine(name=magazine['name'],
                                                       category=category_obj,
-                                                      path=magazine['path']))
+                                                      remote_path=magazine['path']))
                 Magazine.objects.bulk_create(new_magazines)
 
-    def generate_cover(self):
+    def get_magazine(self):
         """
         生成杂志封面
         """
         from django.db.models import Q
         from reading.models import Magazine
         # 按需读取pdf第一页
-        magazines = Magazine.objects.filter(Q(cover__isnull=True) | Q(cover='')).first()
-        if not magazines:
+        magazine = Magazine.objects.filter(Q(cover__isnull=True) | Q(cover='')).first()
+        if not magazine:
             return
-        cover_path = self.get_magazine_cover(magazines.path)
-        magazines.cover = f"magazine/{cover_path}"
-        magazines.save()
+        cover_path = self.get_magazine_cover(magazine.remote_path)
+        local_name = magazine.remote_path.split('/')[-1]
+        self.download_magazine(magazine.remote_path, local_name)
+        magazine.cover = f"/reading/magazine_cover/{cover_path}"
+        magazine.local_path = f"/reading/magazine/{local_name}"
+        magazine.save()
 
     def get_magazine_cover(self, remote_path):
         """
@@ -114,8 +118,23 @@ class MagazineSync:
         pdf_data.seek(0)
         pdf = fitz.open(stream=pdf_data.read())
         first_page = pdf[0]
-        image = first_page.get_pixmap()
+        image = first_page.get_pixmap(dpi=300)
         save_name = remote_path.replace('/', '_').replace(' ', '').replace('.pdf', '.jpg')
-        save_path = os.path.join(MEDIA_ROOT, 'magazine', save_name)
+        save_path = os.path.join(MEDIA_ROOT, 'reading/magazine_cover', save_name)
         image.save(save_path)
         return save_name
+
+    def download_magazine(self, remote_path, local_name):
+        """
+        获取杂志
+        :param remote_path: 杂志远程路径
+        :param local_name: 本地文件名
+        :return:
+        """
+        import os
+        from django_words.settings import MEDIA_ROOT
+
+        local_path = os.path.join(MEDIA_ROOT, 'reading/magazine', local_name)
+
+        # 从 NAS 下载 pdf
+        self.sftp.get(remote_path, local_path)

@@ -243,7 +243,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timedelta(minutes=60 * 12),
     },
     'generate_magazine_cover': {
-        'task': 'reading.tasks.generate_magazine_cover',
+        'task': 'reading.tasks.generate_magazine',
         'schedule': timedelta(minutes=10),
     },
 }
