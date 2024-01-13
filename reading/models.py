@@ -13,6 +13,11 @@ from mdeditor.fields import MDTextField
 
 class Category(BaseModel):
     """文章分类"""
+    CLASSIFY = (
+        ('article', '阅读'),
+        ('magazine', '杂志'),
+    )
+    classify = models.CharField(max_length=128, choices=CLASSIFY, verbose_name='分类', default='article')
     key = models.CharField(max_length=128, verbose_name='分类key', unique=True, db_index=True)
     name = models.CharField(max_length=128, verbose_name='分类名称')
 
@@ -54,23 +59,10 @@ class Article(BaseModel):
         self.save()
 
 
-class MagazineCategory(BaseModel):
-    """杂志分类"""
-    key = models.CharField(max_length=128, null=True, blank=True, verbose_name='杂志分类key')
-    name = models.CharField(max_length=128, verbose_name='杂志分类名称')
-
-    class Meta:
-        verbose_name = '杂志分类'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.name
-
-
 class Magazine(BaseModel):
     """杂志"""
     name = models.CharField(max_length=128, verbose_name='杂志名称')
-    category = models.ForeignKey(MagazineCategory, on_delete=models.SET_NULL, null=True, verbose_name='杂志分类')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='杂志分类')
     cover = models.ImageField(upload_to='magazine_cover', blank=True, null=True, verbose_name='杂志封面')
     local_path = models.FileField(upload_to='magazine', blank=True, null=True, verbose_name='杂志文件')
     remote_path = models.CharField(max_length=256, verbose_name='杂志路径', db_index=True)
