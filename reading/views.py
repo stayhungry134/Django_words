@@ -104,7 +104,7 @@ class MagazineView(APIView):
                 category = Category.objects.filter(classify='magazine').first()
             else:
                 category = Category.objects.filter(id=category_id).first()
-            magazines = Magazine.objects.filter(category=category).all()
+            magazines = Magazine.objects.filter(category=category).all().order_by('-id')
             res_pager = Paginator(magazines, page_size).get_page(1)
             serializer = MagazineSerializer(res_pager, many=True)
             return Response({
