@@ -136,7 +136,7 @@ class MagazineView(APIView):
         if not files:
             return Response({'msg': '文件不能为空'})
         file_name = request.POST.get('name', None)
-        with open(f"{MEDIA_ROOT}/magazine/{file_name}", 'wb') as f:
+        with open(f"{MEDIA_ROOT}/reading/magazine/{file_name}", 'wb') as f:
             for file in files:
                 for chunk in file.chunks():
                     f.write(chunk)
