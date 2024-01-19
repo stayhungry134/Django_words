@@ -78,7 +78,7 @@ class MagazineSync:
 
     def get_magazine(self):
         """
-        生成杂志封面
+        生成杂志
         """
         from django.db.models import Q
         from reading.models import Magazine
@@ -121,7 +121,10 @@ class MagazineSync:
         image = first_page.get_pixmap(dpi=300)
         save_name = remote_path.replace('/', '_').replace(' ', '_').replace('.pdf', '.jpg')
         save_path = os.path.join(MEDIA_ROOT, 'reading/magazine_cover', save_name)
+        compress_path = os.path.join(MEDIA_ROOT, 'reading/magazine_cover/compress', save_name)
         image.save(save_path)
+        image.thumbnail((600, 800))
+        image.save(compress_path)
         return save_name
 
     def download_magazine(self, remote_path, local_name):
