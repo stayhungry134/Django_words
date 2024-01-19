@@ -52,8 +52,8 @@ class ShanbayBookSync:
             }
             response = requests.get(books_url, params=books_params, headers=self.headers).json()
             objects = response['objects']
-            for object in objects:
-                book = object['book']
+            for obj in objects:
+                book = obj['book']
                 if Book.objects.filter(third_id=book['book_id']).exists():
                     continue
                 cover_name = self.get_book_cover(book['cover_urls'][0])
@@ -65,7 +65,7 @@ class ShanbayBookSync:
                     third_id=book['book_id'],
                     description=book['description_cn'],
                     short_description=book['short_description'],
-                    auther=object['authors'][0]['name_cn']
+                    auther=obj['authors'][0]['name_cn']
                 )
                 book_obj.save()
                 print(f"{book['name_cn']}保存成功！")
@@ -135,15 +135,15 @@ class ShanbayBookSync:
             content_obj.save()
             print(f"{chapter_obj.title_cn}内容暂未解锁！")
             return
-        for object in objects:
-            if 'img_url' in object.keys():
+        for obj in objects:
+            if 'img_url' in obj.keys():
                 content.append({
                     'type': 'image',
-                    'img_url': object['img_url']
+                    'img_url': obj['img_url']
                 })
-            elif 'sentences' in object.keys():
+            elif 'sentences' in obj.keys():
                 sentences = []
-                for sentence in object['sentences']:
+                for sentence in obj['sentences']:
                     words = [word['item']['word'] for word in sentence['words']]
                     sentences.append(words)
                 content.append({
@@ -156,7 +156,6 @@ class ShanbayBookSync:
         )
         content_obj.save()
         print(f"{chapter_obj.title_cn}内容保存成功！")
-
 
 
 if __name__ == '__main__':
