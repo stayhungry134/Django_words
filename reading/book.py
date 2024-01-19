@@ -147,6 +147,7 @@ class ShanbayBookSync:
             content=content
         )
         content_obj.save()
+        print(f"{chapter_obj.title_cn}内容保存成功！")
 
 
 
