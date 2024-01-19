@@ -126,7 +126,15 @@ class ShanbayBookSync:
         content_url = f"https://apiv3.shanbay.com/reading/articles/{chapter_obj.third_id}/article_content"
         content_res = requests.get(content_url, headers=self.headers).json()
         content = []
-        objects = content_res['objects']
+        objects = content_res.get('objects', None)
+        if not objects:
+            content_obj = Content(
+                chapter=chapter_obj,
+                content=content
+            )
+            content_obj.save()
+            print(f"{chapter_obj.title_cn}内容暂未解锁！")
+            return
         for object in objects:
             if 'img_url' in object.keys():
                 content.append({
