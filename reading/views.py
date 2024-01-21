@@ -5,21 +5,20 @@ author: Ethan
 
 Description: 
 """
-import datetime
-
 from django.core.paginator import Paginator
-from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from reading.models import Article, Magazine, Category
-from reading.serializers import ArticleSerializer, MagazineSerializer
+from reading.models import Article, Magazine, Category, Book, Chapter
+from reading.serializers import ArticleSerializer, MagazineSerializer, BookListSerializer, BookSerializer, \
+    ChapterSerializer
 
 
 class CategoryView(APIView):
     """
     用于处理文章分类相关的请求
     """
+
     def get(self, request):
         category_classify = request.query_params.get('classify', None)
         if not category_classify:
@@ -36,6 +35,7 @@ class ArticleView(APIView):
     """
     用于处理文章相关的请求
     """
+
     def get(self, request):
         article_id = request.query_params.get('id', None)
         if not article_id:
@@ -72,6 +72,7 @@ class ArticlesView(APIView):
     """
     用于处理文章列表相关的请求
     """
+
     def get(self, request):
         articles = Article.objects.all().order_by('last_review')
         page_size = request.GET.get('page_size', 10)
@@ -94,6 +95,7 @@ class MagazineView(APIView):
     """
     用于处理杂志相关的请求
     """
+
     def get(self, request):
         magazine_id = request.query_params.get('id', None)
         if not magazine_id:
@@ -143,6 +145,48 @@ class MagazineView(APIView):
         return Response({'msg': 'success'})
 
 
-class UpdateMagazineView(APIView):
-    def post(self, request):
-        pass
+class BooksView(APIView):
+    def get(self, request):
+        page = request.GET.get('page', 1)
+        page_size = request.GET.get('page_size', 12)
+        category_id = request.GET.get('category_id', None)
+        if not category_id:
+            category = Category.objects.filter(classify='book').first()
+        else:
+            category = Category.objects.filter(id=category_id).first()
+        books = Book.objects.filter(category=category)
+        res_pager = Paginator(books, page_size).get_page(page)
+        serializer = BookListSerializer(res_pager, many=True)
+        return Response({
+            'page': page,
+            'has_previous': res_pager.has_previous(),
+            'has_next': res_pager.has_next(),
+            'total': books.count(),
+            'items': serializer.data,
+            'page_num': res_pager.paginator.num_pages,
+            'page_size': page_size,
+        })
+
+
+class BookView(APIView):
+    def get(self, request):
+        book_id = request.query_params.get('id', None)
+        if not book_id:
+            return Response({'msg': 'id 不能为空'})
+        book = Book.objects.filter(id=book_id).first()
+        if not book:
+            return Response({'msg': '书籍不存在'})
+        serializer = BookSerializer(book)
+        return Response(serializer.data)
+
+
+class ChapterView(APIView):
+    def get(self, request):
+        chapter_id = request.query_params.get('id', None)
+        if not chapter_id:
+            return Response({'msg': 'id 不能为空'})
+        chapter = Chapter.objects.filter(id=chapter_id).first()
+        if not chapter:
+            return Response({'msg': '章节不存在'})
+        serializer = ChapterSerializer(chapter, context={'res_type': 'detail'})
+        return Response(serializer.data)
