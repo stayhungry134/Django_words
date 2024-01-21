@@ -46,6 +46,7 @@ class Article(BaseModel):
     class Meta:
         verbose_name = '文章'
         verbose_name_plural = verbose_name
+        ordering = ('-id',)
 
     def __str__(self):
         return self.title_en
@@ -71,6 +72,7 @@ class Magazine(BaseModel):
     class Meta:
         verbose_name = '杂志'
         verbose_name_plural = verbose_name
+        ordering = ('-id',)
 
     def __str__(self):
         return self.name
@@ -89,6 +91,7 @@ class Book(BaseModel):
     class Meta:
         verbose_name = '书籍'
         verbose_name_plural = verbose_name
+        ordering = ('-id',)
 
     def __str__(self):
         return self.title_en
@@ -106,13 +109,14 @@ class Chapter(BaseModel):
     class Meta:
         verbose_name = '章节'
         verbose_name_plural = verbose_name
+        ordering = ('book', 'index',)
 
     def __str__(self):
         return self.title_en
 
 
 class Content(BaseModel):
-    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, verbose_name='章节', db_index=True)
+    chapter = models.OneToOneField(Chapter, on_delete=models.CASCADE, verbose_name='章节', db_index=True)
     content = models.JSONField(verbose_name='内容', default=[])
 
     class Meta:

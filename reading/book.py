@@ -156,8 +156,3 @@ class ShanbayBookSync:
         )
         content_obj.save()
         print(f"{chapter_obj.title_cn}内容保存成功！")
-
-
-if __name__ == '__main__':
-    book_sync = ShanbayBookSync()
-    book_sync.get_books()
