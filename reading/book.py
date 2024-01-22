@@ -65,7 +65,7 @@ class ShanbayBookSync:
                     third_id=book['book_id'],
                     description=book['description_cn'],
                     short_description=book['short_description'],
-                    auther=obj['authors'][0]['name_cn']
+                    author=obj['authors'][0]['name_cn']
                 )
                 book_obj.save()
                 print(f"{book['name_cn']}保存成功！")

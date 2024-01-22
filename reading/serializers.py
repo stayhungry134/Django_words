@@ -77,7 +77,7 @@ class ChapterSerializer(BaseModelSerializer):
 
     class Meta:
         model = Chapter
-        fields = ('id', 'book', 'title_cn', 'title_en', 'create_time', 'update_time', 'index', 'is_finished')
+        fields = ('id', 'book', 'title_cn', 'title_en', 'create_time', 'update_time', 'index', 'is_finished', 'length')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -119,7 +119,7 @@ class BookSerializer(BaseModelSerializer):
     class Meta:
         model = Book
         fields = ('id', 'title_cn', 'title_en', 'category', 'cover', 'create_time', 'update_time', 'description',
-                  'auther', 'short_description', 'chapters')
+                  'author', 'short_description', 'chapters')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

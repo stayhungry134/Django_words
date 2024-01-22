@@ -86,7 +86,7 @@ class Book(BaseModel):
     third_id = models.CharField(max_length=32, blank=True, null=True, verbose_name='第三方id')
     description = models.TextField(blank=True, null=True, verbose_name='简介')
     short_description = models.CharField(max_length=255, blank=True, null=True, verbose_name='简短简介')
-    auther = models.CharField(max_length=128, blank=True, null=True, verbose_name='作者')
+    author = models.CharField(max_length=128, blank=True, null=True, verbose_name='作者')
 
     class Meta:
         verbose_name = '书籍'
