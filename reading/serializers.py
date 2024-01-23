@@ -104,7 +104,7 @@ class BookListSerializer(BaseModelSerializer):
 
         # 计算完成百分比
         if total_chapters > 0:
-            completion_percentage = (completed_chapters / total_chapters) * 100
+            completion_percentage = round(completed_chapters / total_chapters * 100)
         else:
             completion_percentage = 0
 
