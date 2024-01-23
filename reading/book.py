@@ -120,9 +120,9 @@ class ShanbayBookSync:
         获取章节内容
         """
         from reading.models import Content
-        # if Content.objects.filter(chapter=chapter_obj).exists():
-        #     print(f"{chapter_obj.title_cn}内容已存在！")
-        #     return
+        if Content.objects.filter(chapter=chapter_obj).exists():
+            print(f"{chapter_obj.title_cn}内容已存在！")
+            return
         content_url = f"https://apiv3.shanbay.com/reading/articles/{chapter_obj.third_id}/article_content"
         content_res = requests.get(content_url, headers=self.headers).json()
         content = []
