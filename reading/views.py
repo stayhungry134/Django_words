@@ -190,3 +190,19 @@ class ChapterView(APIView):
             return Response({'msg': '章节不存在'})
         serializer = ChapterSerializer(chapter, context={'res_type': 'detail'})
         return Response(serializer.data)
+
+    def post(self, request):
+        """
+        用于提交章节的试图
+        :param request:
+        :return:
+        """
+        chapter_id = request.data.get('chapter_id', None)
+        if not chapter_id:
+            return Response({'msg': 'id 参数不能为空'})
+        chapter = Chapter.objects.filter(id=chapter_id).first()
+        if not chapter:
+            return Response({'msg': '章节不存在'})
+        chapter.is_finished = True
+        chapter.save()
+        return Response({'msg': 'success'})
