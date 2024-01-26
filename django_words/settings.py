@@ -238,12 +238,12 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'reading.tasks.shanbay_article_content',
         'schedule': timedelta(minutes=30),
     },
-    'magazine_sync_task': {
-        'task': 'reading.tasks.magazine_sync_task',
-        'schedule': timedelta(minutes=60 * 12),
-    },
-    'generate_magazine_cover': {
-        'task': 'reading.tasks.generate_magazine',
-        'schedule': timedelta(minutes=10),
-    },
+    # 'magazine_sync_task': {
+    #     'task': 'reading.tasks.magazine_sync_task',
+    #     'schedule': timedelta(minutes=60 * 12),
+    # },
+    # 'generate_magazine_cover': {
+    #     'task': 'reading.tasks.generate_magazine',
+    #     'schedule': timedelta(minutes=10),
+    # },
 }
