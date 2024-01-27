@@ -5,6 +5,7 @@ author: Ethan
 
 Description: 请求扇贝数据的一些方法
 """
+import datetime
 import logging
 import os
 
@@ -85,6 +86,7 @@ class Article:
         :return:
         """
         import xmltodict
+        import uuid
 
         from django_words.settings import MEDIA_ROOT
         from reading.models import Article
@@ -122,7 +124,7 @@ class Article:
         # 保存图片
         if img_url:
             path_url = 'reading/article_img'
-            img_name = img_url.split('/')[-1]
+            img_name = datetime.date.today().isoformat() + '-' + uuid.uuid4().hex + '.jpg'
             img_path = os.path.join(MEDIA_ROOT, path_url, img_name)
             if not os.path.exists(img_path):
                 img_response = requests.get(img_url, cookies=self.cookies, headers=self.headers)
@@ -133,4 +135,5 @@ class Article:
         # 保存文章内容
         content = ' '.join(content)
         no_content_article.content = content
+        print(f"{no_content_article.id}内容保存成功！")
         no_content_article.save()
