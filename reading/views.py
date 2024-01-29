@@ -39,7 +39,7 @@ class ArticleView(APIView):
     def get(self, request):
         article_id = request.query_params.get('id', None)
         if not article_id:
-            article = (Article.objects.filter().order_by('last_review').first())
+            article = (Article.objects.exclude(content='', last_review__isnull=True).order_by('-id').first())
         else:
             article = Article.objects.filter(id=article_id).first()
         if not article:
