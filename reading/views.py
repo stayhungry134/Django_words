@@ -37,9 +37,16 @@ class ArticleView(APIView):
     """
 
     def get(self, request):
+        from django.db.models import F, Case, When, Value, CharField
         article_id = request.query_params.get('id', None)
         if not article_id:
-            article = (Article.objects.exclude(content='', last_review__isnull=True).order_by('-id').first())
+            article = Article.objects.exclude(content='').annotate(
+                last_review_null=Case(
+                    When(last_review__isnull=True, then=Value('')),
+                    default=F('last_review'),
+                    output_field=CharField(),
+                )
+            ).order_by('last_review_null', 'last_review').first()
         else:
             article = Article.objects.filter(id=article_id).first()
         if not article:
@@ -74,7 +81,14 @@ class ArticlesView(APIView):
     """
 
     def get(self, request):
-        articles = Article.objects.exclude(content='').order_by('-id')
+        from django.db.models import F, Case, When, Value, CharField
+        articles = Article.objects.exclude(content='').annotate(
+            last_review_null=Case(
+                When(last_review__isnull=True, then=Value('')),
+                default=F('last_review'),
+                output_field=CharField(),
+            )
+        ).order_by('last_review_null', 'last_review')
         page_size = request.GET.get('page_size', 10)
         page = request.GET.get('page', 1)
         res_pager = Paginator(articles, page_size).get_page(page)
