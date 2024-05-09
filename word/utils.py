@@ -31,3 +31,16 @@ def review_word(word: NewWord):
     record = ReviewRecord.objects.filter(word=word).first() or ReviewRecord(word=word)
     record.familiarity += 1
     record.save()
+
+
+def parse_data(content):
+    """
+    解析扇贝单词单词数据
+    :param content: 返回来的原生加密数据
+    :return: 解密后的 JSON 数据
+    """
+    import execjs
+    from django_words.settings import BASE_DIR
+    with open(f"{BASE_DIR}/word/parse.js", 'r') as f:
+        js = f.read()
+    return execjs.compile(js).call('decode', content)

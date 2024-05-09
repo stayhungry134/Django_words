@@ -238,6 +238,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'reading.tasks.shanbay_article_content',
         'schedule': timedelta(minutes=30),
     },
+    'shanbay_word_list': {
+        'task': 'word.tasks.shanbay_word_list',
+        'schedule': timedelta(minutes=60 * 6),
+    }
     # 'magazine_sync_task': {
     #     'task': 'reading.tasks.magazine_sync_task',
     #     'schedule': timedelta(minutes=60 * 12),

@@ -15,7 +15,7 @@ from reading.models import Book, Chapter
 class ShanbayBookSync:
     def __init__(self):
         self.headers = {
-            'cookie': '_ga=GA1.2.1385338636.1703228181; sessionid="e30:1rQiQv:fpyB1lTCyt98rcm9jW6bN-8mq2Y"; auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjU2MzMyNzcxLCJleHAiOjE3MDY1MTAzNDYsImV4cF92MiI6MTcwNjUxMDM0NiwiZGV2aWNlIjoiIiwidXNlcm5hbWUiOiJQaG9uZV9iMzkzODY3NGRiMWM5YzdlIiwiaXNfc3RhZmYiOjAsInNlc3Npb25faWQiOiJiZTdjYTZjNGI2OTQxMWVlODc3MTgyY2Q2ZWQxNjU0NiJ9.zm3IFJmQFXNvHWyudXB5HYGKbc0w_Zu3xoEbZ2uIOYY; csrftoken=c3e645e3238d79aeb9bde3d9556cc042; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22gvkuds%22%2C%22first_id%22%3A%2218c904f8c07e85-0ff459458d8d1b-26001951-1638720-18c904f8c081900%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22%24device_id%22%3A%2218c904f8c07e85-0ff459458d8d1b-26001951-1638720-18c904f8c081900%22%7D; _gat=1',
+            'cookie': '_ga=GA1.2.1466650865.1705908448; auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjU2MzMyNzcxLCJleHAiOjE3MDY3NzI3ODAsImV4cF92MiI6MTcwNjc3Mjc4MCwiZGV2aWNlIjoiIiwidXNlcm5hbWUiOiJQaG9uZV9iMzkzODY3NGRiMWM5YzdlIiwiaXNfc3RhZmYiOjAsInNlc3Npb25faWQiOiJjNTRhM2IwYWI4ZjcxMWVlYWJhMzlhNDBlYTQ1NTM4NSJ9.0raD3Vu_I2SHnxwxuf3wuOaCHM_gbnzme10wrhC0yfA; csrftoken=684d86d550ddd559f2169eaf7cfd75f1; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22gvkuds%22%2C%22first_id%22%3A%2218d30112a7d8c3-03bca50519b33c-26001951-1638720-18d30112a7e1bae%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22%24device_id%22%3A%2218d30112a7d8c3-03bca50519b33c-26001951-1638720-18d30112a7e1bae%22%7D; _gat=1',
             'origin': 'https://web.shanbay.com',
             'referer': 'https://web.shanbay.com/',
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'
@@ -78,11 +78,12 @@ class ShanbayBookSync:
     def get_book_cover(self, url):
         import requests
         import uuid
+        import datetime
         from django_words.settings import MEDIA_ROOT
         response = requests.get(url, headers=self.headers).content
 
         cover_path = os.path.join(MEDIA_ROOT, 'reading/book/book_cover')
-        cover_name = f"{uuid.uuid4().hex}.jpg"
+        cover_name = f"{datetime.date.today().isoformat()}-{uuid.uuid4().hex}.jpg"
         with open(os.path.join(cover_path, cover_name), 'wb') as f:
             f.write(response)
 
