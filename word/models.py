@@ -37,7 +37,7 @@ class NewWord(BaseModel):
     class Meta:
         verbose_name = '新单词'
         verbose_name_plural = verbose_name
-        ordering = ('-create_time',)
+        ordering = ('-id',)
 
     def __str__(self):
         return self.word
@@ -62,7 +62,7 @@ class ReviewRecord(models.Model):
     class Meta:
         verbose_name = '复习记录'
         verbose_name_plural = verbose_name
-        ordering = ('-next_review',)
+        ordering = ('-id',)
 
     def __str__(self):
         return self.word
