@@ -55,7 +55,7 @@ class WordView(APIView):
         }
         word_data = requests.post(url=url, params=params, headers=headers, data=data).json()
         res_word = word_data['ec']['word']
-        meaning = res_word['trs']
+        meaning = res_word.get('trs')
         us_phone = res_word.get('usphone', None)
         uk_phone = res_word.get('ukphone', None)
         # 柯林斯解释
