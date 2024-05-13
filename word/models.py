@@ -65,15 +65,18 @@ class ReviewRecord(models.Model):
         ordering = ('-id',)
 
     def __str__(self):
-        return self.word
+        return self.word.word
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
+        # 如果今天已经复习过了，就跳过
+        today = datetime.date.today()
+        if self.last_review == today:
+            return
         # 记忆次数加 1
         self.review_times += 1
-        # 相隔的天数，
-        today = datetime.date.today()
+        # 相隔的天数
         self.last_review = today
         interval = int(1.8 ** self.familiarity)
         self.next_review = today + datetime.timedelta(days=interval)
