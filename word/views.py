@@ -135,9 +135,10 @@ class RemindSts(APIView):
         :param request:
         :return:
         """
+        from django.db.models import Q
         today = datetime.date.today()
         # 今天需要复习的单词
-        today_words = ReviewRecord.objects.filter(next_review__lte=today)
+        today_words = ReviewRecord.objects.filter(Q(next_review__lte=today) | Q(last_review=today))
         # 今天已经复习的单词数量
         reminded_words = today_words.filter(last_review=today)
         return Response({
