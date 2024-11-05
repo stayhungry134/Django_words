@@ -14,4 +14,5 @@ app_name = 'word'
 urlpatterns = [
     path('', views.WordView.as_view(), name='word'),
     path('remind/', views.RemindView.as_view(), name='word_list'),
+    path('remindsts/', views.RemindSts.as_view(), name='word_list'),
 ]

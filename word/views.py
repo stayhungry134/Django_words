@@ -123,3 +123,24 @@ class RemindView(APIView):
             review_word(word_obj)
 
         return Response({'msg': 'success'})
+
+
+class RemindSts(APIView):
+    """
+    获取今天复习的单词数量
+    """
+    def get(self, request):
+        """
+        获取今天复习的单词数量
+        :param request:
+        :return:
+        """
+        today = datetime.date.today()
+        # 今天需要复习的单词
+        today_words = ReviewRecord.objects.filter(next_review__lte=today)
+        # 今天已经复习的单词数量
+        reminded_words = today_words.filter(last_review=today)
+        return Response({
+            'total': today_words.count(),
+            'reminded': reminded_words.count(),
+        })
